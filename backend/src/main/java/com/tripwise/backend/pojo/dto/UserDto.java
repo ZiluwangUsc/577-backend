@@ -5,19 +5,28 @@ import java.time.LocalDateTime;
 public class UserDto {
 
     private Integer userId;
-
     private String email;
-
     private String passwordHash;
-
     private String nickname;
-
     private String profilePhoto;
-
     private LocalDateTime createdAt;
-
     private LocalDateTime updatedAt;
 
+    public UserDto() {
+    }
+
+    public UserDto(Integer userId, String email, String passwordHash, String nickname,
+            String profilePhoto, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.userId = userId;
+        this.email = email;
+        this.passwordHash = passwordHash;
+        this.nickname = nickname;
+        this.profilePhoto = profilePhoto;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    // Getters and Setters
     public Integer getUserId() {
         return userId;
     }
@@ -72,5 +81,18 @@ public class UserDto {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    @Override
+    public String toString() {
+        return "UserDto{" +
+                "userId=" + userId +
+                ", email='" + email + '\'' +
+                ", passwordHash='" + passwordHash + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", profilePhoto='" + profilePhoto + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
     }
 }
