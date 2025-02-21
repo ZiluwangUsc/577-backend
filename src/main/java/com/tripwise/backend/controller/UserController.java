@@ -3,7 +3,7 @@ package com.tripwise.backend.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.tripwise.backend.pojo.dto.UserDto;
+import com.tripwise.backend.dto.UserDto;
 import com.tripwise.backend.service.IUserService;
 
 import org.springframework.beans.factory.annotation.Autowired;

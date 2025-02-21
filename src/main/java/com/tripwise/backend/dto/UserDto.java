@@ -1,51 +1,29 @@
-package com.tripwise.backend.pojo;
+package com.tripwise.backend.dto;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
-import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 
-@Table(name = "users")
-@Entity
-public class User {
+public class UserDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
     private Integer userId;
-
-    @Column(name = "email", nullable = false, unique = true, length = 255)
     private String email;
-
-    @Column(name = "password_hash", nullable = false, length = 255)
     private String passwordHash;
-
-    @Column(name = "nickname", length = 100)
     private String nickname;
-
-    @Column(name = "profile_photo", length = 255)
     private String profilePhoto;
-
-    @Column(name = "created_at", nullable = false, updatable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdAt;
-
-    @Column(name = "updated_at", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     private LocalDateTime updatedAt;
 
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now(); // Set current timestamp
-        this.updatedAt = LocalDateTime.now(); // Set current timestamp
+    public UserDto() {
     }
 
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedAt = LocalDateTime.now(); // Update the timestamp
+    public UserDto(Integer userId, String email, String passwordHash, String nickname,
+            String profilePhoto, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.userId = userId;
+        this.email = email;
+        this.passwordHash = passwordHash;
+        this.nickname = nickname;
+        this.profilePhoto = profilePhoto;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     // Getters and Setters
@@ -107,10 +85,14 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
-                " email=" + email +
-                ", passwordHash=" + passwordHash +
-                ", nickname=" + nickname +
+        return "UserDto{" +
+                "userId=" + userId +
+                ", email='" + email + '\'' +
+                ", passwordHash='" + passwordHash + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", profilePhoto='" + profilePhoto + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
                 '}';
     }
 }

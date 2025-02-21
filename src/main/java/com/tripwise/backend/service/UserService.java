@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tripwise.backend.controller.UserController;
-import com.tripwise.backend.pojo.User;
-import com.tripwise.backend.pojo.dto.UserDto;
+import com.tripwise.backend.dto.UserDto;
+import com.tripwise.backend.entity.User;
 import com.tripwise.backend.repository.UserRepository;
 
 import java.util.List;

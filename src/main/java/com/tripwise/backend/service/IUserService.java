@@ -2,8 +2,8 @@ package com.tripwise.backend.service;
 
 import java.util.List;
 
-import com.tripwise.backend.pojo.User;
-import com.tripwise.backend.pojo.dto.UserDto;
+import com.tripwise.backend.dto.UserDto;
+import com.tripwise.backend.entity.User;
 
 public interface IUserService {
 
