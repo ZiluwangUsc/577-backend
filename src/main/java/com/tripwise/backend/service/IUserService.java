@@ -1,7 +1,5 @@
 package com.tripwise.backend.service;
 
-import java.util.List;
-
 import com.tripwise.backend.dto.UserDto;
 import com.tripwise.backend.dto.UserRegisterDto;
 import com.tripwise.backend.entity.User;
@@ -17,7 +15,4 @@ public interface IUserService {
     public UserDto getUserById(Integer id);
 
     public UserDto getUserByEmail(String email);
-
-    public List<UserDto> getAllUsers();
-
 }

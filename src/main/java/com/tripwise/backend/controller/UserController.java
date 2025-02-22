@@ -25,12 +25,6 @@ public class UserController {
         return "Success!";
     }
 
-    // Read all users
-    @GetMapping
-    public List<UserDto> getAllUsers() {
-        return userService.getAllUsers();
-    }
-
     // Read user by email
     @GetMapping("/{email}")
     public UserDto getUserById(@PathVariable String email) {

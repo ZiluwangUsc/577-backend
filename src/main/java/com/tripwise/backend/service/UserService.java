@@ -14,9 +14,7 @@ import com.tripwise.backend.repository.UserRepository;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService implements IUserService {
@@ -32,17 +30,6 @@ public class UserService implements IUserService {
         User user = mapRegisterDtoToUser(userRegisterDto);
         logger.info("Adding User: " + user.toString());
         return userRepository.save(user);
-    }
-
-    @Override
-    public List<UserDto> getAllUsers() {
-        List<User> users = userRepository.findAll();
-        logger.info("Fetching All Users: " + users.size() + " users found.");
-        return users.stream()
-                .map(user -> new UserDto(user.getUserId(), user.getEmail(), user.getPasswordHash(),
-                        user.getNickname(), user.getProfilePhoto(),
-                        user.getCreatedAt(), user.getUpdatedAt()))
-                .collect(Collectors.toList());
     }
 
     @Override
