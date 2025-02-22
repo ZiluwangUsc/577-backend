@@ -22,7 +22,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	implementation 'javax.persistence:javax.persistence-api:2.2'
+	// implementation 'org.springframework.boot:spring-boot-starter-security' // hash password
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	// testImplementation 'org.springframework.security:spring-security-test' // hash password
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
