@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tripwise.backend.dto.UserDto;
+import com.tripwise.backend.dto.UserRegisterDto;
 import com.tripwise.backend.service.IUserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,8 @@ public class UserController {
 
     // Create
     @PostMapping("/register")
-    public String add(@RequestBody UserDto user) {
-        userService.add(user);
+    public String create(@RequestBody UserRegisterDto userRegisterDto) {
+        userService.create(userRegisterDto);
         return "Success!";
     }
 

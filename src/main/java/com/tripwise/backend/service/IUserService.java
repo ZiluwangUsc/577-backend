@@ -3,11 +3,12 @@ package com.tripwise.backend.service;
 import java.util.List;
 
 import com.tripwise.backend.dto.UserDto;
+import com.tripwise.backend.dto.UserRegisterDto;
 import com.tripwise.backend.entity.User;
 
 public interface IUserService {
 
-    User add(UserDto user);
+    public User create(UserRegisterDto userRegisterDto);
 
     public void delete(Integer id);
 

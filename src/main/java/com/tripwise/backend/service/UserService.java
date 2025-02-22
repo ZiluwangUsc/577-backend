@@ -7,8 +7,12 @@ import org.springframework.stereotype.Service;
 
 import com.tripwise.backend.controller.UserController;
 import com.tripwise.backend.dto.UserDto;
+import com.tripwise.backend.dto.UserRegisterDto;
 import com.tripwise.backend.entity.User;
 import com.tripwise.backend.repository.UserRepository;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,8 +27,9 @@ public class UserService implements IUserService {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Override
-    public User add(UserDto userDto) {
-        User user = mapDtoToEntity(userDto);
+    public User create(UserRegisterDto userRegisterDto) {
+        logger.info("Adding User: " + userRegisterDto.toString());
+        User user = mapRegisterDtoToUser(userRegisterDto);
         logger.info("Adding User: " + user.toString());
         return userRepository.save(user);
     }
@@ -78,7 +83,7 @@ public class UserService implements IUserService {
     public void update(Integer id, UserDto userDto) {
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isPresent()) {
-            User user = mapDtoToEntity(userDto);
+            User user = mapUserDtoToUser(userDto);
             user.setUserId(id);
             userRepository.save(user);
             logger.info("Updating User ID: " + id + " with data: " + user.toString());
@@ -99,7 +104,7 @@ public class UserService implements IUserService {
         }
     }
 
-    private User mapDtoToEntity(UserDto userDto) {
+    private User mapUserDtoToUser(UserDto userDto) {
         User user = new User();
         user.setUserId(userDto.getUserId());
         user.setEmail(userDto.getEmail());
@@ -109,5 +114,35 @@ public class UserService implements IUserService {
         user.setCreatedAt(userDto.getCreatedAt());
         user.setUpdatedAt(userDto.getUpdatedAt());
         return user;
+    }
+
+    private User mapRegisterDtoToUser(UserRegisterDto dto) {
+        User user = new User();
+
+        user.setEmail(dto.getEmail());
+        String hashedPassword = generateMD5Hash(dto.getPassword());
+        user.setPasswordHash(hashedPassword);
+        
+        return user;
+    }
+
+    public static String generateMD5Hash(String input) {
+        try {
+            // Create an instance of the MD5 MessageDigest
+            MessageDigest md = MessageDigest.getInstance("MD5");
+
+            // Compute the hash as bytes
+            byte[] hashBytes = md.digest(input.getBytes());
+
+            // Convert the byte array into a hexadecimal string
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hashBytes) {
+                hexString.append(String.format("%02x", b));
+            }
+
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("MD5 algorithm not found", e);
+        }
     }
 }
