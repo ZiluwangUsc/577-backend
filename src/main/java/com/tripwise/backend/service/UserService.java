@@ -5,16 +5,20 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.tripwise.backend.constants.Constants;
 import com.tripwise.backend.controller.UserController;
 import com.tripwise.backend.dto.UserDto;
+import com.tripwise.backend.dto.request.TokenRefreshDto;
+import com.tripwise.backend.dto.request.UserLoginDto;
 import com.tripwise.backend.dto.request.UserRegisterDto;
 import com.tripwise.backend.entity.User;
 import com.tripwise.backend.repository.UserRepository;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
+import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserService implements IUserService {
@@ -25,11 +29,58 @@ public class UserService implements IUserService {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Override
+    public String generateToken() {
+        return UUID.randomUUID().toString();
+    }
+
+    @Override
     public User create(UserRegisterDto userRegisterDto) {
         logger.info("Adding User: " + userRegisterDto.toString());
         User user = mapRegisterDtoToUser(userRegisterDto);
+        user.setToken(this.generateToken());
         logger.info("Adding User: " + user.toString());
         return userRepository.save(user);
+    }
+
+    @Override
+    public User login(UserLoginDto userLoginDto) {
+        String email = userLoginDto.getEmail();
+        String password = generateMD5Hash(userLoginDto.getPassword());
+        Optional<User> userOptional = userRepository.findByEmail(email);
+        User user = userOptional.orElse(null);
+        if (user == null) {
+            return null;
+        }
+        if (!user.getPasswordHash().equals(password) || !user.getEmail().equals(email)) {
+            return null;
+        }
+        if (user.getToken() == null
+                || LocalDateTime.now().isAfter(user.getTokenCreatedAt().plusSeconds(Constants.TOKEN_EXPIRE_TIME))) {
+            user.setToken(this.generateToken()); // create a new token
+            userRepository.save(user);
+        }
+        return user;
+    }
+
+    @Override
+    public User getUserByToken(String token) {
+        Optional<User> userOptional = userRepository.findByToken(token);
+        User user = userOptional.orElse(null);
+        if (user == null) {
+            return null;
+        }
+        user.setToken(this.generateToken());
+        return user;
+    }
+
+    @Override
+    public User refreshToken(TokenRefreshDto tokenRefreshDto) {
+        User user = getUserByToken(tokenRefreshDto.getRefreshToken());
+        if (user == null) {
+            return null;
+        }
+        user.setToken(this.generateToken());
+        return user;
     }
 
     @Override
@@ -56,15 +107,14 @@ public class UserService implements IUserService {
             User user = userOptional.get();
             logger.info("Fetching User By Email: " + email + ", Found: " + user.toString());
             return new UserDto(user.getUserId(), user.getEmail(), user.getPasswordHash(),
-                               user.getNickname(), user.getProfilePhoto(),
-                               user.getCreatedAt(), user.getUpdatedAt());
+                    user.getNickname(), user.getProfilePhoto(),
+                    user.getCreatedAt(), user.getUpdatedAt());
         } else {
             logger.warn("User with email " + email + " not found.");
             // throw new UserNotFoundException("User with email " + email + " not found");
             return null;
         }
     }
-    
 
     @Override
     public void update(Integer id, UserDto userDto) {
@@ -109,7 +159,7 @@ public class UserService implements IUserService {
         user.setEmail(dto.getEmail());
         String hashedPassword = generateMD5Hash(dto.getPassword());
         user.setPasswordHash(hashedPassword);
-        
+
         return user;
     }
 

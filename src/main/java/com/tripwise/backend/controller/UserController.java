@@ -1,16 +1,20 @@
 package com.tripwise.backend.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.tripwise.backend.dto.UserDto;
-import com.tripwise.backend.dto.UserRegisterDto;
+import com.tripwise.backend.dto.request.TokenRefreshDto;
+import com.tripwise.backend.dto.request.UserLoginDto;
+import com.tripwise.backend.dto.request.UserRegisterDto;
+import com.tripwise.backend.dto.response.UserLoginResponseDto;
+import com.tripwise.backend.dto.response.UserRegisterResponseDto;
 import com.tripwise.backend.service.IUserService;
+import com.tripwise.backend.entity.User;
+
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/auth")
@@ -20,9 +24,30 @@ public class UserController {
 
     // Create
     @PostMapping("/register")
-    public String create(@RequestBody UserRegisterDto userRegisterDto) {
-        userService.create(userRegisterDto);
-        return "Success!";
+    public ResponseEntity<UserRegisterResponseDto> create(@RequestBody UserRegisterDto userRegisterDto) {
+        User newUser = userService.create(userRegisterDto);
+        UserRegisterResponseDto response = new UserRegisterResponseDto(newUser.getUserId(), newUser.getToken());
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<UserLoginResponseDto> login(@RequestBody UserLoginDto userLoginDto) {
+        User user = userService.login(userLoginDto);
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        UserLoginResponseDto response = new UserLoginResponseDto(user.getUserId(), user.getToken());
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<UserLoginResponseDto> refreshToken(@RequestBody TokenRefreshDto tokenRefreshDto) {
+        User user = userService.refreshToken(tokenRefreshDto);
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        UserLoginResponseDto response = new UserLoginResponseDto(user.getUserId(), user.getToken());
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     // Read user by email

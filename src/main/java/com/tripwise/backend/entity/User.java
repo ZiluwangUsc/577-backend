@@ -31,11 +31,17 @@ public class User {
     @Column(name = "profile_photo", length = 255)
     private String profilePhoto;
 
-    @Column(name = "created_at", nullable = false, updatable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
+    @Column(name = "token", length = 255)
+    private String token;
+
+    @Column(name = "user_created_at", nullable = false, updatable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    @Column(name = "user_updated_at", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     private LocalDateTime updatedAt;
+
+    @Column(name = "token_created_at", nullable = false, updatable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
+    private LocalDateTime tokenCreatedAt;
 
     @PrePersist
     protected void onCreate() {
@@ -87,6 +93,23 @@ public class User {
 
     public void setProfilePhoto(String profilePhoto) {
         this.profilePhoto = profilePhoto;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+        this.tokenCreatedAt = LocalDateTime.now(); // Set current timestamp
+    }
+
+    public LocalDateTime getTokenCreatedAt() {
+        return tokenCreatedAt;
+    }
+
+    public void setTokenCreatedAt(LocalDateTime tokenCreatedAt) {
+        this.tokenCreatedAt = tokenCreatedAt;
     }
 
     public LocalDateTime getCreatedAt() {
