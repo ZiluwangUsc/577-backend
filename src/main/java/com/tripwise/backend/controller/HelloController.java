@@ -6,8 +6,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 public class HelloController {
+    @GetMapping("/")
+    public String helloWorld(@RequestParam(required = false, defaultValue = "World") String param) {
+        return "Hello " + param;
+    }
     @GetMapping("/hello")
-    public String requestMethodName(@RequestParam(required = false, defaultValue = "World") String param) {
+    public String helloWorld2(@RequestParam(required = false, defaultValue = "World") String param) {
         return "Hello " + param;
     }
 
