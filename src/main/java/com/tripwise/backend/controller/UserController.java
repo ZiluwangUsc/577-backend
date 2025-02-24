@@ -12,6 +12,8 @@ import com.tripwise.backend.dto.response.UserRegisterResponseDto;
 import com.tripwise.backend.service.IUserService;
 import com.tripwise.backend.entity.User;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -76,5 +78,23 @@ public class UserController {
     public String deleteUser(@PathVariable Integer id) {
         userService.delete(id);
         return "User deleted successfully!";
+    }
+
+    // 请求修改密码
+    @PostMapping("/password-reset-request")
+    public ResponseEntity<?> requestPasswordReset(@RequestBody Map<String, String> request) {
+        boolean success = userService.requestPasswordReset(request.get("email"));
+        return success
+                ? ResponseEntity.ok(Map.of("message", "Password reset link sent to email"))
+                : ResponseEntity.badRequest().body(Map.of("message", "Email not found"));
+    }
+
+    // 提交新密码
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody Map<String, String> request) {
+        boolean success = userService.resetPassword(request.get("resetToken"), request.get("newPassword"));
+        return success
+                ? ResponseEntity.ok(Map.of("message", "Password has been reset successfully"))
+                : ResponseEntity.badRequest().body(Map.of("message", "Invalid or expired token"));
     }
 }

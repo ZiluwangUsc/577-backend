@@ -136,4 +136,16 @@ public class User {
                 ", nickname=" + nickname +
                 '}';
     }
+
+
+    private String resetToken;  // 存储 Token
+    private LocalDateTime tokenExpiry; // Token 过期时间
+
+    // Getters & Setters
+    public String getResetToken() { return resetToken; }
+    public void setResetToken(String resetToken) { this.resetToken = resetToken; }
+    
+    public LocalDateTime getTokenExpiry() { return tokenExpiry; }
+    public void setTokenExpiry(LocalDateTime tokenExpiry) { this.tokenExpiry = tokenExpiry; }
+    
 }

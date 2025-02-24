@@ -12,4 +12,5 @@ import com.tripwise.backend.entity.User;
 public interface UserRepository extends JpaRepository<User, Integer>{
     Optional<User> findByEmail(String email);
     Optional<User> findByToken(String token);
+    Optional<User> findByResetToken(String resetToken);
 }
