@@ -1,9 +1,9 @@
 package com.tripwise.backend.dto.response;
 
-public class Message {
+public class MessageDto {
     private String message;
 
-    public Message(String message) {
+    public MessageDto(String message) {
         this.message = message;
     }
 

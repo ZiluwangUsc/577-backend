@@ -6,7 +6,8 @@ import com.tripwise.backend.dto.request.TokenRefreshDto;
 import com.tripwise.backend.dto.request.UserLoginDto;
 import com.tripwise.backend.dto.request.UserLogoutDto;
 import com.tripwise.backend.dto.request.UserRegisterDto;
-import com.tripwise.backend.dto.response.Message;
+import com.tripwise.backend.dto.response.MessageDto;
+import com.tripwise.backend.dto.response.UserInfoDto;
 import com.tripwise.backend.dto.response.UserLoginResponseDto;
 import com.tripwise.backend.dto.response.UserRegisterResponseDto;
 import com.tripwise.backend.service.IUserService;
@@ -54,9 +55,9 @@ public class UserController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<Message> logout(@RequestBody UserLogoutDto userLogoutDto) {
+    public ResponseEntity<MessageDto> logout(@RequestBody UserLogoutDto userLogoutDto) {
         userService.logout(userLogoutDto);
-        Message response = new Message(Constants.LOG_OUT_OK);
+        MessageDto response = new MessageDto(Constants.LOG_OUT_OK);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -96,5 +97,16 @@ public class UserController {
         return success
                 ? ResponseEntity.ok(Map.of("message", "Password has been reset successfully"))
                 : ResponseEntity.badRequest().body(Map.of("message", "Invalid or expired token"));
+    }
+
+    // Get Current User API
+    @GetMapping("/user")
+    public ResponseEntity<UserInfoDto> getUserInfo(@RequestHeader("token") String token) {
+        User user = userService.getUserByToken(token);
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        UserInfoDto userInfo = new UserInfoDto(user);
+        return new ResponseEntity<>(userInfo, HttpStatus.OK);
     }
 }
