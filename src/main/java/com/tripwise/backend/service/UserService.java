@@ -14,6 +14,10 @@ import com.tripwise.backend.dto.request.UserLogoutDto;
 import com.tripwise.backend.dto.request.UserRegisterDto;
 import com.tripwise.backend.entity.User;
 import com.tripwise.backend.repository.UserRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+
+
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -211,5 +215,42 @@ public class UserService implements IUserService {
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException("MD5 algorithm not found", e);
         }
+    }
+
+    // 请求修改密码
+    @Override
+    @Transactional
+    public boolean requestPasswordReset(String email) {
+        Optional<User> userOptional = userRepository.findByEmail(email);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.setResetToken(UUID.randomUUID().toString()); // 生成随机 Token
+            user.setTokenExpiry(LocalDateTime.now().plusMinutes(30)); // 30 分钟后过期
+            userRepository.save(user);
+            return true;
+        }
+        return false;
+    }
+
+    // 使用 Token 重置密码
+    @Override
+    @Transactional
+    public boolean resetPassword(String resetToken, String newPassword) {
+        Optional<User> userOptional = userRepository.findByResetToken(resetToken);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+
+            // 检查 Token 是否过期
+            if (user.getTokenExpiry().isBefore(LocalDateTime.now())) {
+                return false;
+            }
+
+            user.setPasswordHash(newPassword); // ✅ 直接存储明文密码（不加密）
+            user.setResetToken(null); // 清除 Token
+            user.setTokenExpiry(null);
+            userRepository.save(user);
+            return true;
+        }
+        return false;
     }
 }

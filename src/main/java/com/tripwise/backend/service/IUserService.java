@@ -35,4 +35,7 @@ public interface IUserService {
      * @return
      */
     public boolean deleteToken(User user);
+
+    public boolean requestPasswordReset(String email);
+    public boolean resetPassword(String resetToken, String newPassword);
 }
