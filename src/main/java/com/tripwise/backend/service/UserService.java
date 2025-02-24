@@ -224,7 +224,7 @@ public class UserService implements IUserService {
         Optional<User> userOptional = userRepository.findByEmail(email);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            user.setResetToken(UUID.randomUUID().toString()); // 生成随机 Token
+            user.setResetToken(this.generateToken()); // 生成随机 Token
             user.setTokenExpiry(LocalDateTime.now().plusMinutes(30)); // 30 分钟后过期
             userRepository.save(user);
             return true;
