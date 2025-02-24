@@ -40,7 +40,7 @@ public class User {
     @Column(name = "user_updated_at", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     private LocalDateTime updatedAt;
 
-    @Column(name = "token_created_at", nullable = false, updatable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
+    @Column(name = "token_created_at", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime tokenCreatedAt;
 
     @PrePersist
@@ -101,7 +101,7 @@ public class User {
 
     public void setToken(String token) {
         this.token = token;
-        this.tokenCreatedAt = LocalDateTime.now(); // Set current timestamp
+        this.setTokenCreatedAt(LocalDateTime.now()); // Set current timestamp
     }
 
     public LocalDateTime getTokenCreatedAt() {

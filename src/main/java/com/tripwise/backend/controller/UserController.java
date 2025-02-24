@@ -1,15 +1,16 @@
 package com.tripwise.backend.controller;
 
+import com.tripwise.backend.constants.Constants;
 import com.tripwise.backend.dto.UserDto;
 import com.tripwise.backend.dto.request.TokenRefreshDto;
 import com.tripwise.backend.dto.request.UserLoginDto;
+import com.tripwise.backend.dto.request.UserLogoutDto;
 import com.tripwise.backend.dto.request.UserRegisterDto;
+import com.tripwise.backend.dto.response.Message;
 import com.tripwise.backend.dto.response.UserLoginResponseDto;
 import com.tripwise.backend.dto.response.UserRegisterResponseDto;
 import com.tripwise.backend.service.IUserService;
 import com.tripwise.backend.entity.User;
-
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -47,6 +48,13 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         UserLoginResponseDto response = new UserLoginResponseDto(user.getUserId(), user.getToken());
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Message> logout(@RequestBody UserLogoutDto userLogoutDto) {
+        userService.logout(userLogoutDto);
+        Message response = new Message(Constants.LOG_OUT_OK);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

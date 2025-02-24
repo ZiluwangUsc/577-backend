@@ -10,6 +10,7 @@ import com.tripwise.backend.controller.UserController;
 import com.tripwise.backend.dto.UserDto;
 import com.tripwise.backend.dto.request.TokenRefreshDto;
 import com.tripwise.backend.dto.request.UserLoginDto;
+import com.tripwise.backend.dto.request.UserLogoutDto;
 import com.tripwise.backend.dto.request.UserRegisterDto;
 import com.tripwise.backend.entity.User;
 import com.tripwise.backend.repository.UserRepository;
@@ -54,11 +55,13 @@ public class UserService implements IUserService {
         if (!user.getPasswordHash().equals(password) || !user.getEmail().equals(email)) {
             return null;
         }
+        
         if (user.getToken() == null
                 || LocalDateTime.now().isAfter(user.getTokenCreatedAt().plusSeconds(Constants.TOKEN_EXPIRE_TIME))) {
             user.setToken(this.generateToken()); // create a new token
             userRepository.save(user);
         }
+
         return user;
     }
 
@@ -80,7 +83,34 @@ public class UserService implements IUserService {
             return null;
         }
         user.setToken(this.generateToken());
+        userRepository.save(user);
         return user;
+    }
+
+    @Override
+    public void logout(UserLogoutDto userLogoutDto) {
+        logger.info("Logging out User: " + userLogoutDto.toString());
+        Integer userId = userLogoutDto.getUserId();
+        Optional<User> userOptional = userRepository.findById(userId);
+        User user = userOptional.orElse(null);
+        if (user == null) {
+            return;
+        }
+
+        deleteToken(user);
+    }
+
+    @Override
+    public boolean deleteToken(User user) {
+        try {
+            user.setToken(null);
+            user.setTokenCreatedAt(null);
+            userRepository.save(user);
+            return true;
+        } catch (Exception e) {
+            logger.error("Error deleting token for user: " + user.getUserId(), e);
+            return false;
+        }
     }
 
     @Override
