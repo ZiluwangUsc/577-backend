@@ -1,7 +1,7 @@
 package com.tripwise.backend.service;
 
 import com.tripwise.backend.dto.UserDto;
-import com.tripwise.backend.dto.UserRegisterDto;
+import com.tripwise.backend.dto.request.UserRegisterDto;
 import com.tripwise.backend.entity.User;
 
 public interface IUserService {

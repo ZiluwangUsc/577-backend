@@ -1,4 +1,4 @@
-package com.tripwise.backend.dto;
+package com.tripwise.backend.dto.request;
 
 /**
  * A DTO sent from client to request to create a user

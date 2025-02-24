@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.tripwise.backend.controller.UserController;
 import com.tripwise.backend.dto.UserDto;
-import com.tripwise.backend.dto.UserRegisterDto;
+import com.tripwise.backend.dto.request.UserRegisterDto;
 import com.tripwise.backend.entity.User;
 import com.tripwise.backend.repository.UserRepository;
 
