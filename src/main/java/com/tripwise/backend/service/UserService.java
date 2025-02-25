@@ -37,11 +37,14 @@ public class UserService implements IUserService {
 
     @Override
     public User create(UserRegisterDto userRegisterDto) {
-        logger.info("Adding User: " + userRegisterDto.toString());
-        User user = mapRegisterDtoToUser(userRegisterDto);
-        user.setToken(this.generateToken());
-        logger.info("Adding User: " + user.toString());
-        return userRepository.save(user);
+        User user = userRepository.findByEmail(userRegisterDto.getEmail()).orElse(null);
+        if (user != null) {
+            return null; // User already exists
+        }
+
+        User newuser = mapRegisterDtoToUser(userRegisterDto);
+        newuser.setToken(this.generateToken());
+        return userRepository.save(newuser);
     }
 
     @Override
@@ -115,7 +118,7 @@ public class UserService implements IUserService {
             User user = userOptional.get();
             logger.info("Fetching User By ID: " + id + ", Found: " + user.toString());
             return new UserDto(user.getUserId(), user.getEmail(), user.getPasswordHash(),
-                    user.getNickname(), user.getProfilePhoto(),
+                    user.getdisplayName(), user.getProfilePhoto(),
                     user.getCreatedAt(), user.getUpdatedAt());
         } else {
             logger.warn("User with ID " + id + " not found.");
@@ -132,7 +135,7 @@ public class UserService implements IUserService {
             User user = userOptional.get();
             logger.info("Fetching User By Email: " + email + ", Found: " + user.toString());
             return new UserDto(user.getUserId(), user.getEmail(), user.getPasswordHash(),
-                    user.getNickname(), user.getProfilePhoto(),
+                    user.getdisplayName(), user.getProfilePhoto(),
                     user.getCreatedAt(), user.getUpdatedAt());
         } else {
             logger.warn("User with email " + email + " not found.");
@@ -171,7 +174,7 @@ public class UserService implements IUserService {
         user.setUserId(userDto.getUserId());
         user.setEmail(userDto.getEmail());
         user.setPasswordHash(userDto.getPasswordHash());
-        user.setNickname(userDto.getNickname());
+        user.setdisplayName(userDto.getdisplayName());
         user.setProfilePhoto(userDto.getProfilePhoto());
         user.setCreatedAt(userDto.getCreatedAt());
         user.setUpdatedAt(userDto.getUpdatedAt());
@@ -184,6 +187,9 @@ public class UserService implements IUserService {
         user.setEmail(dto.getEmail());
         String hashedPassword = generateMD5Hash(dto.getPassword());
         user.setPasswordHash(hashedPassword);
+
+        user.setdisplayName(dto.getDisplayName());
+        user.setUsername(dto.getUsername());
 
         return user;
     }

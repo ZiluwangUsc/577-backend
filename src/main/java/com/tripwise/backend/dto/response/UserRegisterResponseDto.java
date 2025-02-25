@@ -1,5 +1,7 @@
 package com.tripwise.backend.dto.response;
 
+import com.tripwise.backend.constants.Constants;
+
 /**
  * {
  * "message": "User registered successfully",
@@ -8,16 +10,18 @@ package com.tripwise.backend.dto.response;
  * }
  */
 public class UserRegisterResponseDto {
-    private String message = "User registered successfully";
+    private String message;
     private Integer userId;
     private String token;
 
     public UserRegisterResponseDto() {
+        this.message = Constants.REGISTER_EXISTED;
     }
 
     public UserRegisterResponseDto(Integer userId, String token) {
         this.userId = userId;
         this.token = token;
+        this.message = Constants.REGISTER_OK;
     }
 
     public String getMessage() {

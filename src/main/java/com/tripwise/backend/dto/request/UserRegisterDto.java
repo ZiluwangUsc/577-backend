@@ -14,14 +14,16 @@ public class UserRegisterDto {
     private String username;
     private String email;
     private String password;
+    private String displayName;
 
     public UserRegisterDto() {
     }
 
-    public UserRegisterDto(String username, String email, String password) {
+    public UserRegisterDto(String username, String email, String password, String displayName) {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.displayName = displayName;
     }
 
     public String getUsername() {
@@ -34,6 +36,14 @@ public class UserRegisterDto {
 
     public String getPassword() {
         return password;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     public String toString() {

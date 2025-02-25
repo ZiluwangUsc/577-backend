@@ -22,11 +22,14 @@ public class User {
     @Column(name = "email", nullable = false, unique = true, length = 255)
     private String email;
 
+    @Column(name = "username", nullable = true, length = 255)
+    private String username;
+
     @Column(name = "password_hash", nullable = false, length = 255)
     private String passwordHash;
 
-    @Column(name = "nickname", length = 100)
-    private String nickname;
+    @Column(name = "display_name", length = 100)
+    private String displayName;
 
     @Column(name = "profile_photo", length = 255)
     private String profilePhoto;
@@ -71,6 +74,14 @@ public class User {
         this.email = email;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public String getPasswordHash() {
         return passwordHash;
     }
@@ -79,12 +90,12 @@ public class User {
         this.passwordHash = passwordHash;
     }
 
-    public String getNickname() {
-        return nickname;
+    public String getdisplayName() {
+        return displayName;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public void setdisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     public String getProfilePhoto() {
@@ -133,7 +144,7 @@ public class User {
         return "User{" +
                 " email=" + email +
                 ", passwordHash=" + passwordHash +
-                ", nickname=" + nickname +
+                ", displayName=" + displayName +
                 '}';
     }
 

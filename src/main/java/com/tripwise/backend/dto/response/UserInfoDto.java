@@ -6,20 +6,23 @@ public class UserInfoDto {
     private Integer userId;
     private String username;
     private String email;
+    private String displayName;
 
     public UserInfoDto() {
     }
 
-    public UserInfoDto(Integer userId, String username, String email) {
+    public UserInfoDto(Integer userId, String username, String email, String displayName) {
         this.userId = userId;
         this.username = username;
         this.email = email;
+        this.displayName = displayName;
     }
 
     public UserInfoDto(User user) {
-        this.userId = user.getUserId();
-        this.username = user.getNickname();
-        this.email = user.getEmail();
+        this.setUserId(user.getUserId());
+        this.setEmail(user.getEmail());
+        this.setUsername(user.getUsername());
+        this.setdisplayName(user.getdisplayName());
     }
 
     public Integer getUserId() {
@@ -44,5 +47,13 @@ public class UserInfoDto {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getdisplayName() {
+        return displayName;
+    }
+
+    public void setdisplayName(String displayName) {
+        this.displayName = displayName;
     }
 }

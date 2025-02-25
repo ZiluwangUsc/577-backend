@@ -17,10 +17,19 @@ public class UserLoginResponseDto {
     private Integer userId;
     private String token;
     private Integer expiresIn = Constants.TOKEN_EXPIRE_TIME; // default expiration time in seconds
+    private String message;
+
+    public UserLoginResponseDto() {
+        this.userId = null;
+        this.token = null;
+        this.expiresIn = null;
+        this.message = Constants.LOGIN_FAIL;
+    }
 
     public UserLoginResponseDto(Integer userId, String token) {
         this.userId = userId;
         this.token = token;
+        this.message = Constants.LOGIN_OK;
     }
 
     public Integer getUserId() {
@@ -45,5 +54,13 @@ public class UserLoginResponseDto {
 
     public void setExpiresIn(Integer expiresIn) {
         this.expiresIn = expiresIn;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

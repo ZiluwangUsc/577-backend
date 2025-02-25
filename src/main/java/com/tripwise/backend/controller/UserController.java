@@ -30,6 +30,10 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<UserRegisterResponseDto> create(@RequestBody UserRegisterDto userRegisterDto) {
         User newUser = userService.create(userRegisterDto);
+        if (newUser == null) { // already exists
+            return new ResponseEntity<>(new UserRegisterResponseDto(), HttpStatus.BAD_REQUEST);
+        }
+        
         UserRegisterResponseDto response = new UserRegisterResponseDto(newUser.getUserId(), newUser.getToken());
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
@@ -38,7 +42,7 @@ public class UserController {
     public ResponseEntity<UserLoginResponseDto> login(@RequestBody UserLoginDto userLoginDto) {
         User user = userService.login(userLoginDto);
         if (user == null) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(new UserLoginResponseDto(), HttpStatus.UNAUTHORIZED);
         }
         UserLoginResponseDto response = new UserLoginResponseDto(user.getUserId(), user.getToken());
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -48,7 +52,7 @@ public class UserController {
     public ResponseEntity<UserLoginResponseDto> refreshToken(@RequestBody TokenRefreshDto tokenRefreshDto) {
         User user = userService.refreshToken(tokenRefreshDto);
         if (user == null) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(new UserLoginResponseDto(), HttpStatus.UNAUTHORIZED);
         }
         UserLoginResponseDto response = new UserLoginResponseDto(user.getUserId(), user.getToken());
         return new ResponseEntity<>(response, HttpStatus.OK);

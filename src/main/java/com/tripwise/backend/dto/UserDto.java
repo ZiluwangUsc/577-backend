@@ -7,7 +7,7 @@ public class UserDto {
     private Integer userId;
     private String email;
     private String passwordHash;
-    private String nickname;
+    private String displayName;
     private String profilePhoto;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -15,12 +15,12 @@ public class UserDto {
     public UserDto() {
     }
 
-    public UserDto(Integer userId, String email, String passwordHash, String nickname,
+    public UserDto(Integer userId, String email, String passwordHash, String displayName,
             String profilePhoto, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.userId = userId;
         this.email = email;
         this.passwordHash = passwordHash;
-        this.nickname = nickname;
+        this.displayName = displayName;
         this.profilePhoto = profilePhoto;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -51,12 +51,12 @@ public class UserDto {
         this.passwordHash = passwordHash;
     }
 
-    public String getNickname() {
-        return nickname;
+    public String getdisplayName() {
+        return displayName;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public void setdisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     public String getProfilePhoto() {
@@ -89,7 +89,7 @@ public class UserDto {
                 "userId=" + userId +
                 ", email='" + email + '\'' +
                 ", passwordHash='" + passwordHash + '\'' +
-                ", nickname='" + nickname + '\'' +
+                ", displayName='" + displayName + '\'' +
                 ", profilePhoto='" + profilePhoto + '\'' +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
