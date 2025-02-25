@@ -7,6 +7,9 @@ public class UserInfoDto {
     private String username;
     private String email;
 
+    public UserInfoDto() {
+    }
+
     public UserInfoDto(Integer userId, String username, String email) {
         this.userId = userId;
         this.username = username;

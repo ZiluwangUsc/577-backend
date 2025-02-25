@@ -16,9 +16,6 @@ import com.tripwise.backend.entity.User;
 import com.tripwise.backend.repository.UserRepository;
 import org.springframework.transaction.annotation.Transactional;
 
-
-
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
@@ -59,7 +56,7 @@ public class UserService implements IUserService {
         if (!user.getPasswordHash().equals(password) || !user.getEmail().equals(email)) {
             return null;
         }
-        
+
         if (user.getToken() == null
                 || LocalDateTime.now().isAfter(user.getTokenCreatedAt().plusSeconds(Constants.TOKEN_EXPIRE_TIME))) {
             user.setToken(this.generateToken()); // create a new token
@@ -71,13 +68,7 @@ public class UserService implements IUserService {
 
     @Override
     public User getUserByToken(String token) {
-        Optional<User> userOptional = userRepository.findByToken(token);
-        User user = userOptional.orElse(null);
-        if (user == null) {
-            return null;
-        }
-        user.setToken(this.generateToken());
-        return user;
+        return userRepository.findByToken(token).orElse(null);
     }
 
     @Override

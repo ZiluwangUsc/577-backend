@@ -104,7 +104,8 @@ public class UserController {
     public ResponseEntity<UserInfoDto> getUserInfo(@RequestHeader("token") String token) {
         User user = userService.getUserByToken(token);
         if (user == null) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            UserInfoDto userInfo = new UserInfoDto();
+            return new ResponseEntity<>(userInfo, HttpStatus.UNAUTHORIZED);
         }
         UserInfoDto userInfo = new UserInfoDto(user);
         return new ResponseEntity<>(userInfo, HttpStatus.OK);
