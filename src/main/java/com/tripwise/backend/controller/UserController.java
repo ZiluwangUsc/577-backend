@@ -2,14 +2,14 @@ package com.tripwise.backend.controller;
 
 import com.tripwise.backend.constants.Constants;
 import com.tripwise.backend.dto.UserDto;
-import com.tripwise.backend.dto.request.TokenRefreshDto;
-import com.tripwise.backend.dto.request.UserLoginDto;
-import com.tripwise.backend.dto.request.UserLogoutDto;
-import com.tripwise.backend.dto.request.UserRegisterDto;
+import com.tripwise.backend.dto.request.user.TokenRefreshDto;
+import com.tripwise.backend.dto.request.user.UserLoginDto;
+import com.tripwise.backend.dto.request.user.UserLogoutDto;
+import com.tripwise.backend.dto.request.user.UserRegisterDto;
 import com.tripwise.backend.dto.response.MessageDto;
-import com.tripwise.backend.dto.response.UserInfoDto;
-import com.tripwise.backend.dto.response.UserLoginResponseDto;
-import com.tripwise.backend.dto.response.UserRegisterResponseDto;
+import com.tripwise.backend.dto.response.user.UserInfoDto;
+import com.tripwise.backend.dto.response.user.UserLoginResponseDto;
+import com.tripwise.backend.dto.response.user.UserRegisterResponseDto;
 import com.tripwise.backend.service.IUserService;
 import com.tripwise.backend.entity.User;
 

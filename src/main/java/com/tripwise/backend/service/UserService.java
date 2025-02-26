@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 import com.tripwise.backend.constants.Constants;
 import com.tripwise.backend.controller.UserController;
 import com.tripwise.backend.dto.UserDto;
-import com.tripwise.backend.dto.request.TokenRefreshDto;
-import com.tripwise.backend.dto.request.UserLoginDto;
-import com.tripwise.backend.dto.request.UserLogoutDto;
-import com.tripwise.backend.dto.request.UserRegisterDto;
+import com.tripwise.backend.dto.request.user.TokenRefreshDto;
+import com.tripwise.backend.dto.request.user.UserLoginDto;
+import com.tripwise.backend.dto.request.user.UserLogoutDto;
+import com.tripwise.backend.dto.request.user.UserRegisterDto;
 import com.tripwise.backend.entity.User;
 import com.tripwise.backend.repository.UserRepository;
 import org.springframework.transaction.annotation.Transactional;
@@ -67,11 +67,6 @@ public class UserService implements IUserService {
         }
 
         return user;
-    }
-
-    @Override
-    public User getUserByToken(String token) {
-        return userRepository.findByToken(token).orElse(null);
     }
 
     @Override
@@ -142,6 +137,23 @@ public class UserService implements IUserService {
             // throw new UserNotFoundException("User with email " + email + " not found");
             return null;
         }
+    }
+
+    @Override
+    public User getUserByToken(String token) {
+        return userRepository.findByToken(token).orElse(null);
+    }
+
+    @Override
+    public boolean verifyUserByToken(String token, Integer userId) {
+        User user = getUserByToken(token);
+        if (user == null) {
+            return false;
+        }
+        if (!user.getUserId().equals(userId)) {
+            return false;
+        }
+        return true;
     }
 
     @Override

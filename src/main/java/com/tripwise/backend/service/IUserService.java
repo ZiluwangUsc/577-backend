@@ -1,10 +1,10 @@
 package com.tripwise.backend.service;
 
 import com.tripwise.backend.dto.UserDto;
-import com.tripwise.backend.dto.request.TokenRefreshDto;
-import com.tripwise.backend.dto.request.UserLoginDto;
-import com.tripwise.backend.dto.request.UserLogoutDto;
-import com.tripwise.backend.dto.request.UserRegisterDto;
+import com.tripwise.backend.dto.request.user.TokenRefreshDto;
+import com.tripwise.backend.dto.request.user.UserLoginDto;
+import com.tripwise.backend.dto.request.user.UserLogoutDto;
+import com.tripwise.backend.dto.request.user.UserRegisterDto;
 import com.tripwise.backend.entity.User;
 
 public interface IUserService {
@@ -19,6 +19,8 @@ public interface IUserService {
 
     public User getUserByToken(String token);
 
+    public boolean verifyUserByToken(String token, Integer userId);
+
     public void update(Integer id, UserDto userDto);
 
     public UserDto getUserById(Integer id);
@@ -28,6 +30,8 @@ public interface IUserService {
     public String generateToken();
 
     public void logout(UserLogoutDto userLogoutDto);
+
+    
 
     /**
      * Precondition: userId != null and user exists

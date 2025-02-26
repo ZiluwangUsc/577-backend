@@ -1,4 +1,4 @@
-package com.tripwise.backend.dto.response;
+package com.tripwise.backend.dto.response.user;
 
 import com.tripwise.backend.constants.Constants;
 
