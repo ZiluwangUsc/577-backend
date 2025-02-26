@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -32,7 +33,7 @@ public class UserService implements IUserService {
 
     @Override
     public String generateToken() {
-        return UUID.randomUUID().toString();
+        return UUID.randomUUID().toString() + "-" + LocalDateTime.now().toEpochSecond(ZoneOffset.UTC);
     }
 
     @Override
