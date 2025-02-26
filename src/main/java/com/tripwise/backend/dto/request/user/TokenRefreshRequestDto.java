@@ -5,10 +5,10 @@ package com.tripwise.backend.dto.request.user;
  * "refreshToken": "your_refresh_token_here"
  * }
  */
-public class TokenRefreshDto {
+public class TokenRefreshRequestDto {
     private String refreshToken; // old token
 
-    public TokenRefreshDto(String refreshToken) {
+    public TokenRefreshRequestDto(String refreshToken) {
         this.refreshToken = refreshToken;
     }
 

@@ -2,23 +2,23 @@ package com.tripwise.backend.dto.response.user;
 
 import com.tripwise.backend.entity.User;
 
-public class UserInfoDto {
+public class UserInfoResponseDto {
     private Integer userId;
     private String username;
     private String email;
     private String displayName;
 
-    public UserInfoDto() {
+    public UserInfoResponseDto() {
     }
 
-    public UserInfoDto(Integer userId, String username, String email, String displayName) {
+    public UserInfoResponseDto(Integer userId, String username, String email, String displayName) {
         this.userId = userId;
         this.username = username;
         this.email = email;
         this.displayName = displayName;
     }
 
-    public UserInfoDto(User user) {
+    public UserInfoResponseDto(User user) {
         this.setUserId(user.getUserId());
         this.setEmail(user.getEmail());
         this.setUsername(user.getUsername());

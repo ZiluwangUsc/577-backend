@@ -1,21 +1,21 @@
 package com.tripwise.backend.service;
 
 import com.tripwise.backend.dto.UserDto;
-import com.tripwise.backend.dto.request.user.TokenRefreshDto;
-import com.tripwise.backend.dto.request.user.UserLoginDto;
-import com.tripwise.backend.dto.request.user.UserLogoutDto;
-import com.tripwise.backend.dto.request.user.UserRegisterDto;
+import com.tripwise.backend.dto.request.user.TokenRefreshRequestDto;
+import com.tripwise.backend.dto.request.user.UserLoginRequestDto;
+import com.tripwise.backend.dto.request.user.UserLogoutRequestDto;
+import com.tripwise.backend.dto.request.user.UserRegisterRequestDto;
 import com.tripwise.backend.entity.User;
 
 public interface IUserService {
 
-    public User create(UserRegisterDto userRegisterDto);
+    public User create(UserRegisterRequestDto userRegisterDto);
 
     public void delete(Integer id);
 
-    public User login(UserLoginDto userLoginDto);
+    public User login(UserLoginRequestDto userLoginDto);
 
-    public User refreshToken(TokenRefreshDto tokenRefreshDto);
+    public User refreshToken(TokenRefreshRequestDto tokenRefreshDto);
 
     public User getUserByToken(String token);
 
@@ -29,7 +29,7 @@ public interface IUserService {
 
     public String generateToken();
 
-    public void logout(UserLogoutDto userLogoutDto);
+    public void logout(UserLogoutRequestDto userLogoutDto);
 
     
 

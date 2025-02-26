@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 import com.tripwise.backend.constants.Constants;
 import com.tripwise.backend.controller.UserController;
 import com.tripwise.backend.dto.UserDto;
-import com.tripwise.backend.dto.request.user.TokenRefreshDto;
-import com.tripwise.backend.dto.request.user.UserLoginDto;
-import com.tripwise.backend.dto.request.user.UserLogoutDto;
-import com.tripwise.backend.dto.request.user.UserRegisterDto;
+import com.tripwise.backend.dto.request.user.TokenRefreshRequestDto;
+import com.tripwise.backend.dto.request.user.UserLoginRequestDto;
+import com.tripwise.backend.dto.request.user.UserLogoutRequestDto;
+import com.tripwise.backend.dto.request.user.UserRegisterRequestDto;
 import com.tripwise.backend.entity.User;
 import com.tripwise.backend.repository.UserRepository;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,7 +37,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User create(UserRegisterDto userRegisterDto) {
+    public User create(UserRegisterRequestDto userRegisterDto) {
         User user = userRepository.findByEmail(userRegisterDto.getEmail()).orElse(null);
         if (user != null) {
             return null; // User already exists
@@ -49,7 +49,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User login(UserLoginDto userLoginDto) {
+    public User login(UserLoginRequestDto userLoginDto) {
         String email = userLoginDto.getEmail();
         String password = generateMD5Hash(userLoginDto.getPassword());
         Optional<User> userOptional = userRepository.findByEmail(email);
@@ -71,7 +71,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User refreshToken(TokenRefreshDto tokenRefreshDto) {
+    public User refreshToken(TokenRefreshRequestDto tokenRefreshDto) {
         User user = getUserByToken(tokenRefreshDto.getRefreshToken());
         if (user == null) {
             return null;
@@ -82,7 +82,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public void logout(UserLogoutDto userLogoutDto) {
+    public void logout(UserLogoutRequestDto userLogoutDto) {
         logger.info("Logging out User: " + userLogoutDto.toString());
         Integer userId = userLogoutDto.getUserId();
         Optional<User> userOptional = userRepository.findById(userId);
@@ -194,7 +194,7 @@ public class UserService implements IUserService {
         return user;
     }
 
-    private User mapRegisterDtoToUser(UserRegisterDto dto) {
+    private User mapRegisterDtoToUser(UserRegisterRequestDto dto) {
         User user = new User();
 
         user.setEmail(dto.getEmail());

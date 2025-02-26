@@ -1,10 +1,10 @@
 package com.tripwise.backend.dto.request.user;
 
-public class UserLoginDto {
+public class UserLoginRequestDto {
     private String email;
     private String password; // raw password
 
-    public UserLoginDto(String email, String password) {
+    public UserLoginRequestDto(String email, String password) {
         this.email = email;
         this.password = password;
     }

@@ -6,10 +6,10 @@ package com.tripwise.backend.dto.request.user;
  * }
  * 
  */
-public class UserLogoutDto {
+public class UserLogoutRequestDto {
     private Integer userId;
 
-    public UserLogoutDto(String userId) {
+    public UserLogoutRequestDto(String userId) {
         this.userId = Integer.valueOf(userId);
     }
 

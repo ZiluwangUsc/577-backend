@@ -2,12 +2,12 @@ package com.tripwise.backend.controller;
 
 import com.tripwise.backend.constants.Constants;
 import com.tripwise.backend.dto.UserDto;
-import com.tripwise.backend.dto.request.user.TokenRefreshDto;
-import com.tripwise.backend.dto.request.user.UserLoginDto;
-import com.tripwise.backend.dto.request.user.UserLogoutDto;
-import com.tripwise.backend.dto.request.user.UserRegisterDto;
+import com.tripwise.backend.dto.request.user.TokenRefreshRequestDto;
+import com.tripwise.backend.dto.request.user.UserLoginRequestDto;
+import com.tripwise.backend.dto.request.user.UserLogoutRequestDto;
+import com.tripwise.backend.dto.request.user.UserRegisterRequestDto;
 import com.tripwise.backend.dto.response.MessageDto;
-import com.tripwise.backend.dto.response.user.UserInfoDto;
+import com.tripwise.backend.dto.response.user.UserInfoResponseDto;
 import com.tripwise.backend.dto.response.user.UserLoginResponseDto;
 import com.tripwise.backend.dto.response.user.UserRegisterResponseDto;
 import com.tripwise.backend.service.IUserService;
@@ -29,7 +29,7 @@ public class UserController {
 
     // Create
     @PostMapping("/register")
-    public ResponseEntity<UserRegisterResponseDto> create(@RequestBody UserRegisterDto userRegisterDto) {
+    public ResponseEntity<UserRegisterResponseDto> create(@RequestBody UserRegisterRequestDto userRegisterDto) {
         User newUser = userService.create(userRegisterDto);
         if (newUser == null) { // already exists
             return new ResponseEntity<>(new UserRegisterResponseDto(), HttpStatus.BAD_REQUEST);
@@ -40,7 +40,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserLoginResponseDto> login(@RequestBody UserLoginDto userLoginDto) {
+    public ResponseEntity<UserLoginResponseDto> login(@RequestBody UserLoginRequestDto userLoginDto) {
         User user = userService.login(userLoginDto);
         if (user == null) {
             return new ResponseEntity<>(new UserLoginResponseDto(Constants.USER_NOT_FOUND), HttpStatus.UNAUTHORIZED);
@@ -53,7 +53,7 @@ public class UserController {
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<UserLoginResponseDto> refreshToken(@RequestBody TokenRefreshDto tokenRefreshDto) {
+    public ResponseEntity<UserLoginResponseDto> refreshToken(@RequestBody TokenRefreshRequestDto tokenRefreshDto) {
         User user = userService.refreshToken(tokenRefreshDto);
         if (user == null) {
             return new ResponseEntity<>(new UserLoginResponseDto(Constants.USER_NOT_FOUND), HttpStatus.UNAUTHORIZED);
@@ -63,7 +63,7 @@ public class UserController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<MessageDto> logout(@RequestBody UserLogoutDto userLogoutDto) {
+    public ResponseEntity<MessageDto> logout(@RequestBody UserLogoutRequestDto userLogoutDto) {
         userService.logout(userLogoutDto);
         MessageDto response = new MessageDto(Constants.LOG_OUT_OK);
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -118,13 +118,13 @@ public class UserController {
 
     // Get Current User API
     @GetMapping("/user")
-    public ResponseEntity<UserInfoDto> getUserInfo(@RequestHeader("token") String token) {
+    public ResponseEntity<UserInfoResponseDto> getUserInfo(@RequestHeader("token") String token) {
         User user = userService.getUserByToken(token);
         if (user == null) {
-            UserInfoDto userInfo = new UserInfoDto();
+            UserInfoResponseDto userInfo = new UserInfoResponseDto();
             return new ResponseEntity<>(userInfo, HttpStatus.UNAUTHORIZED);
         }
-        UserInfoDto userInfo = new UserInfoDto(user);
+        UserInfoResponseDto userInfo = new UserInfoResponseDto(user);
         return new ResponseEntity<>(userInfo, HttpStatus.OK);
     }
 }

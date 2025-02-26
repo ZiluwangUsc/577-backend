@@ -10,16 +10,16 @@ package com.tripwise.backend.dto.request.user;
  * "password": "securepassword123"
  * }
  */
-public class UserRegisterDto {
+public class UserRegisterRequestDto {
     private String username;
     private String email;
     private String password;
     private String displayName;
 
-    public UserRegisterDto() {
+    public UserRegisterRequestDto() {
     }
 
-    public UserRegisterDto(String username, String email, String password, String displayName) {
+    public UserRegisterRequestDto(String username, String email, String password, String displayName) {
         this.username = username;
         this.email = email;
         this.password = password;
