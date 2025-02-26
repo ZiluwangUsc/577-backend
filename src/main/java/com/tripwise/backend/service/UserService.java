@@ -57,7 +57,7 @@ public class UserService implements IUserService {
             return null;
         }
         if (!user.getPasswordHash().equals(password) || !user.getEmail().equals(email)) {
-            return null;
+            return new User(); // used for Invalid credentials
         }
 
         if (user.getToken() == null

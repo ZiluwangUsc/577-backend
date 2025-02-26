@@ -9,7 +9,11 @@ import com.tripwise.backend.constants.Constants;
  * "userId": "123456"
  * }
  * 
+ * error:
  * {
+ * "token": null,
+ * "userId": null,
+ * "expiresIn": null,
  * "error": "Invalid email or password"
  * }
  */
@@ -23,7 +27,14 @@ public class UserLoginResponseDto {
         this.userId = null;
         this.token = null;
         this.expiresIn = null;
-        this.message = Constants.LOGIN_FAIL;
+        this.message = Constants.INVALID_USER_CREDENTIAL;
+    }
+
+    public UserLoginResponseDto(String message) {
+        this.userId = null;
+        this.token = null;
+        this.expiresIn = null;
+        this.message = message;
     }
 
     public UserLoginResponseDto(Integer userId, String token) {

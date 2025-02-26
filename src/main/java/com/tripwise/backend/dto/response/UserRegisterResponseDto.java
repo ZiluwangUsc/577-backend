@@ -3,10 +3,18 @@ package com.tripwise.backend.dto.response;
 import com.tripwise.backend.constants.Constants;
 
 /**
+ * success
  * {
- * "message": "User registered successfully",
- * "userId": "123456",
- * "token": "[UUID]"
+ *      "message": "User registered successfully",
+ *      "userId": "123456",
+ *      "token": "[UUID]"
+ * }
+ * 
+ * error
+ * {
+ *      "message": "User registered successfully",
+ *      "userId": null,
+ *      "token": null
  * }
  */
 public class UserRegisterResponseDto {

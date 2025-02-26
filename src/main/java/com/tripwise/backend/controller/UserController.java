@@ -42,7 +42,10 @@ public class UserController {
     public ResponseEntity<UserLoginResponseDto> login(@RequestBody UserLoginDto userLoginDto) {
         User user = userService.login(userLoginDto);
         if (user == null) {
-            return new ResponseEntity<>(new UserLoginResponseDto(), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(new UserLoginResponseDto(Constants.USER_NOT_FOUND), HttpStatus.UNAUTHORIZED);
+        }
+        if (user.getUsername() == null) {
+            return new ResponseEntity<>(new UserLoginResponseDto(Constants.INVALID_USER_CREDENTIAL), HttpStatus.UNAUTHORIZED);
         }
         UserLoginResponseDto response = new UserLoginResponseDto(user.getUserId(), user.getToken());
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -52,7 +55,7 @@ public class UserController {
     public ResponseEntity<UserLoginResponseDto> refreshToken(@RequestBody TokenRefreshDto tokenRefreshDto) {
         User user = userService.refreshToken(tokenRefreshDto);
         if (user == null) {
-            return new ResponseEntity<>(new UserLoginResponseDto(), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(new UserLoginResponseDto(Constants.USER_NOT_FOUND), HttpStatus.UNAUTHORIZED);
         }
         UserLoginResponseDto response = new UserLoginResponseDto(user.getUserId(), user.getToken());
         return new ResponseEntity<>(response, HttpStatus.OK);
