@@ -85,14 +85,23 @@ public class UserController {
         return "User deleted successfully!";
     }
 
-    // 请求修改密码
     @PostMapping("/password-reset-request")
     public ResponseEntity<?> requestPasswordReset(@RequestBody Map<String, String> request) {
-        boolean success = userService.requestPasswordReset(request.get("email"));
-        return success
-                ? ResponseEntity.ok(Map.of("message", "Password reset link sent to email"))
-                : ResponseEntity.badRequest().body(Map.of("message", "Email not found"));
+        String email = request.get("email");
+        String resetToken = userService.requestPasswordReset(email);
+
+        if (resetToken != null) {
+            return ResponseEntity.ok(Map.of(
+                "message", "Password reset link has been sent",
+                "resetToken", resetToken  // 让前端直接拿到 `resetToken`
+            ));
+        } else {
+            return ResponseEntity.badRequest().body(Map.of(
+                "message", "Email not found"
+            ));
+        }
     }
+
 
     // 提交新密码
     @PostMapping("/reset-password")

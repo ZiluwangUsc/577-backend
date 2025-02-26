@@ -217,16 +217,17 @@ public class UserService implements IUserService {
     // 请求修改密码
     @Override
     @Transactional
-    public boolean requestPasswordReset(String email) {
+    public String requestPasswordReset(String email) {
         Optional<User> userOptional = userRepository.findByEmail(email);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            user.setResetToken(this.generateToken()); // 生成随机 Token
+            String token = this.generateToken();
+            user.setResetToken(token); // 生成随机 Token
             user.setTokenExpiry(LocalDateTime.now().plusMinutes(30)); // 30 分钟后过期
             userRepository.save(user);
-            return true;
+            return token;
         }
-        return false;
+        return null;
     }
 
     // 使用 Token 重置密码
@@ -242,7 +243,7 @@ public class UserService implements IUserService {
                 return false;
             }
 
-            user.setPasswordHash(newPassword); // ✅ 直接存储明文密码（不加密）
+            user.setPasswordHash(generateMD5Hash(newPassword)); // 直接存储明文密码（不加密）
             user.setResetToken(null); // 清除 Token
             user.setTokenExpiry(null);
             userRepository.save(user);
