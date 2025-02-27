@@ -149,7 +149,7 @@ public class TripController {
     @GetMapping("/users/{userId}")
     public ResponseEntity<?> getAllTripsForUser(@PathVariable Integer userId) {
         // Use the new repository method (findByParticipant) which should be defined to accept an Integer.
-        List<Trip> trips = tripRepository.findByParticipant(userId);
+        List<Trip> trips = tripRepository.findByCreatedBy(userId);
         if (trips.isEmpty()) {
             Map<String, Object> errorResponse = new HashMap<>();
             errorResponse.put("code", 404);

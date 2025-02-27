@@ -39,8 +39,8 @@ public class Trip {
     @Column(name = "updated_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     private LocalDateTime updatedAt;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "trip_participants", joinColumns = @JoinColumn(name = "trip_id"))
+//    @ElementCollection(fetch = FetchType.EAGER)
+//    @CollectionTable(name = "trip_participants", joinColumns = @JoinColumn(name = "trip_id"))
     @Column(name = "participant")
     private List<Integer> participants;
 
