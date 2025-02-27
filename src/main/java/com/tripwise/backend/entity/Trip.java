@@ -39,9 +39,10 @@ public class Trip {
     @Column(name = "updated_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     private LocalDateTime updatedAt;
 
-//    @ElementCollection(fetch = FetchType.EAGER)
-//    @Column(name = "participant")
-//    private List<String> participants;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "trip_participants", joinColumns = @JoinColumn(name = "trip_id"))
+    @Column(name = "participant")
+    private List<Integer> participants;
 
     // Getters and Setters
     public Integer getTripId() {
@@ -116,13 +117,12 @@ public class Trip {
         this.updatedAt = updatedAt;
     }
 
-    // Generate getter and setter:
-//    public List<String> getParticipants() {
-//        return participants;
-//    }
-//
-//    public void setParticipants(List<String> participants) {
-//        this.participants = participants;
-//    }
+    public List<Integer> getParticipants() {
+        return participants;
+    }
+
+    public void setParticipants(List<Integer> participants) {
+        this.participants = participants;
+    }
 }
 
