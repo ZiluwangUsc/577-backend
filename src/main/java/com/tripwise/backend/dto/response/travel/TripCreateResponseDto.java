@@ -12,12 +12,12 @@ package com.tripwise.backend.dto.response.trip;
 public class TripCreateResponseDto {
 
     private int code;
-    private String activityId;
+    private Integer activityId;
 
     public TripCreateResponseDto() {
     }
 
-    public TripCreateResponseDto(int code, String activityId) {
+    public TripCreateResponseDto(int code, Integer activityId) {
         this.code = code;
         this.activityId = activityId;
     }
@@ -31,11 +31,11 @@ public class TripCreateResponseDto {
         this.code = code;
     }
 
-    public String getActivityId() {
+    public Integer getActivityId() {
         return activityId;
     }
 
-    public void setActivityId(String activityId) {
+    public void setActivityId(Integer activityId) {
         this.activityId = activityId;
     }
 }
