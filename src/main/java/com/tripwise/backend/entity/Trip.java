@@ -3,6 +3,8 @@ package com.tripwise.backend.entity;
 import jakarta.persistence.*;
 import java.time.LocalDateTime; // 為了使用 created_at 和 updated_at 欄位
 import java.time.LocalDate; // 為了使用 start_date 和 end_date 欄位
+import jakarta.persistence.ElementCollection;
+import java.util.List;
 
 @Entity
 @Table(name = "trips")
@@ -36,6 +38,10 @@ public class Trip {
 
     @Column(name = "updated_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     private LocalDateTime updatedAt;
+
+//    @ElementCollection(fetch = FetchType.EAGER)
+//    @Column(name = "participant")
+//    private List<String> participants;
 
     // Getters and Setters
     public Integer getTripId() {
@@ -109,5 +115,14 @@ public class Trip {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+    // Generate getter and setter:
+//    public List<String> getParticipants() {
+//        return participants;
+//    }
+//
+//    public void setParticipants(List<String> participants) {
+//        this.participants = participants;
+//    }
 }
 
