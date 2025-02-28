@@ -9,6 +9,7 @@ import com.tripwise.backend.constants.Constants;
 import com.tripwise.backend.controller.UserController;
 import com.tripwise.backend.dto.UserDto;
 import com.tripwise.backend.dto.request.user.TokenRefreshRequestDto;
+import com.tripwise.backend.dto.request.user.UserInfoUpdateRequestDto;
 import com.tripwise.backend.dto.request.user.UserLoginRequestDto;
 import com.tripwise.backend.dto.request.user.UserLogoutRequestDto;
 import com.tripwise.backend.dto.request.user.UserRegisterRequestDto;
@@ -158,17 +159,20 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public void update(Integer id, UserDto userDto) {
-        Optional<User> userOptional = userRepository.findById(id);
-        if (userOptional.isPresent()) {
-            User user = mapUserDtoToUser(userDto);
-            user.setUserId(id);
-            userRepository.save(user);
-            logger.info("Updating User ID: " + id + " with data: " + user.toString());
-        } else {
-            logger.warn("User with ID " + id + " not found for update.");
-            // throw new UserNotFoundException("User with ID " + id + " not found");
+    public User update(UserInfoUpdateRequestDto userInfoDto) {
+        // verify the user first
+        User user = getUserByToken(userInfoDto.getToken());
+        if (user == null) {
+            return null;
         }
+        if (!user.getUserId().equals(userInfoDto.getUserId())) {
+            return null;
+        }
+
+        // verification passed
+        mapUpdateInfoDtoToUser(user, userInfoDto);
+        userRepository.save(user);
+        return user;
     }
 
     @Override
@@ -207,6 +211,25 @@ public class UserService implements IUserService {
         user.setSecurityAnswer(dto.getSecurityAnswer());
 
         return user;
+    }
+
+    private void mapUpdateInfoDtoToUser(User user, UserInfoUpdateRequestDto dto) {
+        // user id does not change
+        if (dto.getUsername() != null) {
+            user.setUsername(dto.getUsername());
+        }
+        if (dto.getDisplayName() != null) {
+            user.setDisplayName(dto.getDisplayName());
+        }
+        if (dto.getEmail() != null) {
+            user.setEmail(dto.getEmail());
+        }
+        if (dto.getSecurityQuestion() != null) {
+            user.setSecurityQuestion(dto.getSecurityQuestion());
+        }
+        if (dto.getSecurityAnswer() != null) {
+            user.setSecurityAnswer(dto.getSecurityAnswer());
+        }
     }
 
     public static String generateMD5Hash(String input) {
