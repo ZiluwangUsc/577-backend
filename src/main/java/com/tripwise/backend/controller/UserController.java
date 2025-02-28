@@ -118,7 +118,7 @@ public class UserController {
     // 提交新密码
     @PostMapping("/reset-password")
     public ResponseEntity<?> resetPassword(@RequestBody Map<String, String> request) {
-        boolean success = userService.resetPassword(request.get("passwordResetToken"), request.get("newPassword"));
+        boolean success = userService.resetPassword(request.get("resetToken"), request.get("newPassword"));
         return success
                 ? ResponseEntity.ok(Map.of("message", "Password has been reset successfully"))
                 : ResponseEntity.badRequest().body(Map.of("message", "Invalid or expired token"));
