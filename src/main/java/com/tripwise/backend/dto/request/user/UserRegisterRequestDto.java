@@ -1,5 +1,8 @@
 package com.tripwise.backend.dto.request.user;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+
 /**
  * A DTO sent from client to request to create a user
  * 
@@ -12,7 +15,11 @@ package com.tripwise.backend.dto.request.user;
  */
 public class UserRegisterRequestDto {
     private String username;
+
+    @NotBlank(message = "Email is required")
+    @Email(message = "Invalid email format")
     private String email;
+
     private String password;
     private String displayName;
     private String securityQuestion;

@@ -25,6 +25,8 @@ dependencies {
 	// implementation 'org.springframework.boot:spring-boot-starter-security' // hash password
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	// testImplementation 'org.springframework.security:spring-security-test' // hash password
+    implementation 'jakarta.validation:jakarta.validation-api:3.0.2' // Validation API
+    implementation 'org.hibernate.validator:hibernate-validator:8.0.0.Final'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 

@@ -11,6 +11,9 @@ import com.tripwise.backend.dto.response.user.UserInfoResponseDto;
 import com.tripwise.backend.dto.response.user.UserLoginResponseDto;
 // import com.tripwise.backend.dto.response.user.UserRegisterResponseDto;
 import com.tripwise.backend.service.IUserService;
+
+import jakarta.validation.Valid;
+
 import com.tripwise.backend.entity.User;
 
 import java.util.Map;
@@ -29,7 +32,7 @@ public class UserController {
 
     // Create
     @PostMapping("/register")
-    public ResponseEntity<UserLoginResponseDto> create(@RequestBody UserRegisterRequestDto userRegisterDto) {
+    public ResponseEntity<UserLoginResponseDto> create(@Valid @RequestBody UserRegisterRequestDto userRegisterDto) {
         User newUser = userService.create(userRegisterDto);
         if (newUser == null) { // already exists
             return new ResponseEntity<>(new UserLoginResponseDto(Constants.REGISTER_EXISTED), HttpStatus.BAD_REQUEST);
