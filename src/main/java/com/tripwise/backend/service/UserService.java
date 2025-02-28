@@ -186,17 +186,17 @@ public class UserService implements IUserService {
         }
     }
 
-    private User mapUserDtoToUser(UserDto userDto) {
-        User user = new User();
-        user.setUserId(userDto.getUserId());
-        user.setEmail(userDto.getEmail());
-        user.setPasswordHash(userDto.getPasswordHash());
-        user.setDisplayName(userDto.getDisplayName());
-        user.setProfilePhoto(userDto.getProfilePhoto());
-        user.setCreatedAt(userDto.getCreatedAt());
-        user.setUpdatedAt(userDto.getUpdatedAt());
-        return user;
-    }
+    // private User mapUserDtoToUser(UserDto userDto) {
+    //     User user = new User();
+    //     user.setUserId(userDto.getUserId());
+    //     user.setEmail(userDto.getEmail());
+    //     user.setPasswordHash(userDto.getPasswordHash());
+    //     user.setDisplayName(userDto.getDisplayName());
+    //     user.setProfilePhoto(userDto.getProfilePhoto());
+    //     user.setCreatedAt(userDto.getCreatedAt());
+    //     user.setUpdatedAt(userDto.getUpdatedAt());
+    //     return user;
+    // }
 
     private User mapRegisterDtoToUser(UserRegisterRequestDto dto) {
         User user = new User();
