@@ -9,7 +9,7 @@ import com.tripwise.backend.dto.request.user.UserRegisterRequestDto;
 import com.tripwise.backend.dto.response.MessageDto;
 import com.tripwise.backend.dto.response.user.UserInfoResponseDto;
 import com.tripwise.backend.dto.response.user.UserLoginResponseDto;
-import com.tripwise.backend.dto.response.user.UserRegisterResponseDto;
+// import com.tripwise.backend.dto.response.user.UserRegisterResponseDto;
 import com.tripwise.backend.service.IUserService;
 import com.tripwise.backend.entity.User;
 
@@ -29,13 +29,13 @@ public class UserController {
 
     // Create
     @PostMapping("/register")
-    public ResponseEntity<UserRegisterResponseDto> create(@RequestBody UserRegisterRequestDto userRegisterDto) {
+    public ResponseEntity<UserLoginResponseDto> create(@RequestBody UserRegisterRequestDto userRegisterDto) {
         User newUser = userService.create(userRegisterDto);
         if (newUser == null) { // already exists
-            return new ResponseEntity<>(new UserRegisterResponseDto(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new UserLoginResponseDto(Constants.REGISTER_EXISTED), HttpStatus.BAD_REQUEST);
         }
         
-        UserRegisterResponseDto response = new UserRegisterResponseDto(newUser.getUserId(), newUser.getToken());
+        UserLoginResponseDto response = new UserLoginResponseDto(newUser, Constants.REGISTER_OK);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
@@ -48,7 +48,7 @@ public class UserController {
         if (user.getUsername() == null) {
             return new ResponseEntity<>(new UserLoginResponseDto(Constants.INVALID_USER_CREDENTIAL), HttpStatus.UNAUTHORIZED);
         }
-        UserLoginResponseDto response = new UserLoginResponseDto(user);
+        UserLoginResponseDto response = new UserLoginResponseDto(user, Constants.LOGIN_OK);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -58,7 +58,7 @@ public class UserController {
         if (user == null) {
             return new ResponseEntity<>(new UserLoginResponseDto(Constants.USER_NOT_FOUND), HttpStatus.UNAUTHORIZED);
         }
-        UserLoginResponseDto response = new UserLoginResponseDto(user);
+        UserLoginResponseDto response = new UserLoginResponseDto(user, Constants.TOKEN_REFRESHED);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -92,12 +92,12 @@ public class UserController {
     @PostMapping("/password-reset-request")
     public ResponseEntity<?> requestPasswordReset(@RequestBody Map<String, String> request) {
         String email = request.get("email");
-        String resetToken = userService.requestPasswordReset(email);
+        String passwordResetToken = userService.requestPasswordReset(email);
 
-        if (resetToken != null) {
+        if (passwordResetToken != null) {
             return ResponseEntity.ok(Map.of(
                 "message", "Password reset link has been sent",
-                "resetToken", resetToken  // 让前端直接拿到 `resetToken`
+                "passwordResetToken", passwordResetToken  // 让前端直接拿到 `passwordResetToken`
             ));
         } else {
             return ResponseEntity.badRequest().body(Map.of(
@@ -110,7 +110,7 @@ public class UserController {
     // 提交新密码
     @PostMapping("/reset-password")
     public ResponseEntity<?> resetPassword(@RequestBody Map<String, String> request) {
-        boolean success = userService.resetPassword(request.get("resetToken"), request.get("newPassword"));
+        boolean success = userService.resetPassword(request.get("passwordResetToken"), request.get("newPassword"));
         return success
                 ? ResponseEntity.ok(Map.of("message", "Password has been reset successfully"))
                 : ResponseEntity.badRequest().body(Map.of("message", "Invalid or expired token"));

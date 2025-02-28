@@ -15,6 +15,8 @@ public class UserRegisterRequestDto {
     private String email;
     private String password;
     private String displayName;
+    private String securityQuestion;
+    private String securityAnswer;
 
     public UserRegisterRequestDto() {
     }
@@ -24,6 +26,15 @@ public class UserRegisterRequestDto {
         this.email = email;
         this.password = password;
         this.displayName = displayName;
+    }
+
+    public UserRegisterRequestDto(String username, String email, String password, String displayName, String securityQuestion, String securityAnswer) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.displayName = displayName;
+        this.securityQuestion = securityQuestion;
+        this.securityAnswer = securityAnswer;
     }
 
     public String getUsername() {
@@ -44,6 +55,22 @@ public class UserRegisterRequestDto {
 
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
+    }
+
+    public String getSecurityAnswer() {
+        return securityAnswer;
+    }
+
+    public void setSecurityAnswer(String securityAnswer) {
+        this.securityAnswer = securityAnswer;
+    }
+
+    public String getSecurityQuestion() {
+        return securityQuestion;
+    }
+
+    public void setSecurityQuestion(String securityQuestion) {
+        this.securityQuestion = securityQuestion;
     }
 
     public String toString() {

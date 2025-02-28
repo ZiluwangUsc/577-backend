@@ -41,5 +41,5 @@ public interface IUserService {
     public boolean deleteToken(User user);
 
     public String requestPasswordReset(String email);
-    public boolean resetPassword(String resetToken, String newPassword);
+    public boolean resetPassword(String passwordResetToken, String newPassword);
 }

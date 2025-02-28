@@ -46,6 +46,17 @@ public class User {
     @Column(name = "token_created_at", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime tokenCreatedAt;
 
+    @Column(name = "security_question", length = 255)
+    private String securityQuestion;
+    @Column(name = "security_answer", length = 255)
+    private String securityAnswer;
+
+    @Column(name = "password_reset_token", length = 255)
+    private String passwordResetToken; // 存储 Token
+
+    @Column(name = "password_reset_token_expiry")
+    private LocalDateTime passwordResetTokenExpiry; // Token 过期时间
+
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now(); // Set current timestamp
@@ -94,7 +105,7 @@ public class User {
         return this.displayName;
     }
 
-    public void setdisplayName(String displayName) {
+    public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
 
@@ -139,6 +150,22 @@ public class User {
         this.updatedAt = updatedAt;
     }
 
+    public String getSecurityQuestion() {
+        return securityQuestion;
+    }
+
+    public void setSecurityQuestion(String securityQuestion) {
+        this.securityQuestion = securityQuestion;
+    }
+
+    public String getSecurityAnswer() {
+        return securityAnswer;
+    }
+
+    public void setSecurityAnswer(String securityAnswer) {
+        this.securityAnswer = securityAnswer;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -148,15 +175,24 @@ public class User {
                 '}';
     }
 
-
-    private String resetToken;  // 存储 Token
-    private LocalDateTime tokenExpiry; // Token 过期时间
+    // private String passwordResetToken; // 存储 Token
+    // private LocalDateTime passwordResetTokenExpiry; // Token 过期时间
 
     // Getters & Setters
-    public String getResetToken() { return resetToken; }
-    public void setResetToken(String resetToken) { this.resetToken = resetToken; }
-    
-    public LocalDateTime getTokenExpiry() { return tokenExpiry; }
-    public void setTokenExpiry(LocalDateTime tokenExpiry) { this.tokenExpiry = tokenExpiry; }
-    
+    public String getPasswordResetToken() {
+        return passwordResetToken;
+    }
+
+    public void setPasswordResetToken(String passwordResetToken) {
+        this.passwordResetToken = passwordResetToken;
+    }
+
+    public LocalDateTime getPasswordResetTokenExpiry() {
+        return passwordResetTokenExpiry;
+    }
+
+    public void setPasswordResetTokenExpiry(LocalDateTime passwordResetTokenExpiry) {
+        this.passwordResetTokenExpiry = passwordResetTokenExpiry;
+    }
+
 }

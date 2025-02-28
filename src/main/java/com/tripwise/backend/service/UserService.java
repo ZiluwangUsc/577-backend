@@ -187,7 +187,7 @@ public class UserService implements IUserService {
         user.setUserId(userDto.getUserId());
         user.setEmail(userDto.getEmail());
         user.setPasswordHash(userDto.getPasswordHash());
-        user.setdisplayName(userDto.getDisplayName());
+        user.setDisplayName(userDto.getDisplayName());
         user.setProfilePhoto(userDto.getProfilePhoto());
         user.setCreatedAt(userDto.getCreatedAt());
         user.setUpdatedAt(userDto.getUpdatedAt());
@@ -201,8 +201,10 @@ public class UserService implements IUserService {
         String hashedPassword = generateMD5Hash(dto.getPassword());
         user.setPasswordHash(hashedPassword);
 
-        user.setdisplayName(dto.getDisplayName());
+        user.setDisplayName(dto.getDisplayName());
         user.setUsername(dto.getUsername());
+        user.setSecurityQuestion(dto.getSecurityQuestion());
+        user.setSecurityAnswer(dto.getSecurityAnswer());
 
         return user;
     }
@@ -235,8 +237,8 @@ public class UserService implements IUserService {
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             String token = this.generateToken();
-            user.setResetToken(token); // 生成随机 Token
-            user.setTokenExpiry(LocalDateTime.now().plusMinutes(30)); // 30 分钟后过期
+            user.setPasswordResetToken(token); // 生成随机 Token
+            user.setPasswordResetTokenExpiry(LocalDateTime.now().plusMinutes(30)); // 30 分钟后过期
             userRepository.save(user);
             return token;
         }
@@ -246,19 +248,19 @@ public class UserService implements IUserService {
     // 使用 Token 重置密码
     @Override
     @Transactional
-    public boolean resetPassword(String resetToken, String newPassword) {
-        Optional<User> userOptional = userRepository.findByResetToken(resetToken);
+    public boolean resetPassword(String passwordResetToken, String newPassword) {
+        Optional<User> userOptional = userRepository.findByPasswordResetToken(passwordResetToken);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
 
             // 检查 Token 是否过期
-            if (user.getTokenExpiry().isBefore(LocalDateTime.now())) {
+            if (user.getPasswordResetTokenExpiry().isBefore(LocalDateTime.now())) {
                 return false;
             }
 
             user.setPasswordHash(generateMD5Hash(newPassword)); // 直接存储明文密码（不加密）
-            user.setResetToken(null); // 清除 Token
-            user.setTokenExpiry(null);
+            user.setPasswordResetToken(null); // 清除 Token
+            user.setPasswordResetTokenExpiry(null);
             userRepository.save(user);
             return true;
         }

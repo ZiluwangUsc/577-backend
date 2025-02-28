@@ -55,7 +55,7 @@ public class UserDto {
         return this.displayName;
     }
 
-    public void setdisplayName(String displayName) {
+    public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
 

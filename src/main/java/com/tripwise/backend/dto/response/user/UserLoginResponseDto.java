@@ -43,11 +43,11 @@ public class UserLoginResponseDto {
     /**
      * Constructor for success case
      */
-    public UserLoginResponseDto(User user) {
+    public UserLoginResponseDto(User user, String message) {
         this.userId = user.getUserId();
         this.token = user.getToken();
         this.expiresIn = Constants.TOKEN_EXPIRE_TIME;
-        this.message = Constants.LOGIN_OK;
+        this.message = message;
         this.displayName = user.getDisplayName();
         this.username = user.getUsername();
         this.email = user.getEmail();
