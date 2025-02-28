@@ -1,6 +1,7 @@
 package com.tripwise.backend.dto.response.user;
 
 import com.tripwise.backend.constants.Constants;
+import com.tripwise.backend.entity.User;
 
 /**
  * {
@@ -22,25 +23,60 @@ public class UserLoginResponseDto {
     private String token;
     private Integer expiresIn = Constants.TOKEN_EXPIRE_TIME; // default expiration time in seconds
     private String message;
+    private String username;
+    private String email;
+    private String displayName;
 
+    /**
+     * Default constructor for failure case
+     */
     public UserLoginResponseDto() {
         this.userId = null;
         this.token = null;
         this.expiresIn = null;
         this.message = Constants.INVALID_USER_CREDENTIAL;
+        this.displayName = null;
+        this.username = null;
+        this.email = null;
     }
 
+    /**
+     * Constructor for success case
+     */
+    public UserLoginResponseDto(User user) {
+        this.userId = user.getUserId();
+        this.token = user.getToken();
+        this.expiresIn = Constants.TOKEN_EXPIRE_TIME;
+        this.message = Constants.LOGIN_OK;
+        this.displayName = user.getDisplayName();
+        this.username = user.getUsername();
+        this.email = user.getEmail();
+    }
+
+    /**
+     * Constructor for success case
+     */
+    public UserLoginResponseDto(Integer userId, String token, String message, String username, String email,
+            String displayName) {
+        this.userId = userId;
+        this.token = token;
+        this.message = message;
+        this.username = username;
+        this.email = email;
+        this.displayName = displayName;
+    }
+
+    /**
+     * Constructor for failure case
+     */
     public UserLoginResponseDto(String message) {
         this.userId = null;
         this.token = null;
         this.expiresIn = null;
         this.message = message;
-    }
-
-    public UserLoginResponseDto(Integer userId, String token) {
-        this.userId = userId;
-        this.token = token;
-        this.message = Constants.LOGIN_OK;
+        this.displayName = null;
+        this.username = null;
+        this.email = null;
     }
 
     public Integer getUserId() {
@@ -73,5 +109,29 @@ public class UserLoginResponseDto {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 }

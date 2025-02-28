@@ -90,8 +90,8 @@ public class User {
         this.passwordHash = passwordHash;
     }
 
-    public String getdisplayName() {
-        return displayName;
+    public String getDisplayName() {
+        return this.displayName;
     }
 
     public void setdisplayName(String displayName) {
@@ -99,7 +99,7 @@ public class User {
     }
 
     public String getProfilePhoto() {
-        return profilePhoto;
+        return this.profilePhoto;
     }
 
     public void setProfilePhoto(String profilePhoto) {

@@ -51,8 +51,8 @@ public class UserDto {
         this.passwordHash = passwordHash;
     }
 
-    public String getdisplayName() {
-        return displayName;
+    public String getDisplayName() {
+        return this.displayName;
     }
 
     public void setdisplayName(String displayName) {
