@@ -1,5 +1,7 @@
 package com.tripwise.backend.dto.response.user;
 
+import java.time.LocalDateTime;
+
 import com.tripwise.backend.constants.Constants;
 import com.tripwise.backend.entity.User;
 
@@ -22,6 +24,7 @@ public class UserLoginResponseDto {
     private Integer userId;
     private String token;
     private Integer expiresIn = Constants.TOKEN_EXPIRE_TIME; // default expiration time in seconds
+    private LocalDateTime tokenCreatedAt;
     private String message;
     private String username;
     private String email;
@@ -38,6 +41,7 @@ public class UserLoginResponseDto {
         this.displayName = null;
         this.username = null;
         this.email = null;
+        this.tokenCreatedAt = null;
     }
 
     /**
@@ -51,6 +55,7 @@ public class UserLoginResponseDto {
         this.displayName = user.getDisplayName();
         this.username = user.getUsername();
         this.email = user.getEmail();
+        this.tokenCreatedAt = user.getTokenCreatedAt();
     }
 
     /**
@@ -133,5 +138,13 @@ public class UserLoginResponseDto {
 
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
+    }
+
+    public LocalDateTime getTokenCreatedAt() {
+        return tokenCreatedAt;
+    }
+
+    public void setTokenCreatedAt(LocalDateTime tokenCreatedAt) {
+        this.tokenCreatedAt = tokenCreatedAt;
     }
 }

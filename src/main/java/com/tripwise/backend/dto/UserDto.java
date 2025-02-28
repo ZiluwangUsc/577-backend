@@ -7,6 +7,7 @@ public class UserDto {
     private Integer userId;
     private String email;
     private String passwordHash;
+    private String username;
     private String displayName;
     private String profilePhoto;
     private LocalDateTime createdAt;
@@ -41,6 +42,14 @@ public class UserDto {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPasswordHash() {
@@ -89,6 +98,7 @@ public class UserDto {
                 "userId=" + userId +
                 ", email='" + email + '\'' +
                 ", passwordHash='" + passwordHash + '\'' +
+                ", username='" + username + '\'' +
                 ", displayName='" + displayName + '\'' +
                 ", profilePhoto='" + profilePhoto + '\'' +
                 ", createdAt=" + createdAt +

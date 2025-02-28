@@ -3,6 +3,7 @@ package com.tripwise.backend.controller;
 import com.tripwise.backend.constants.Constants;
 import com.tripwise.backend.dto.UserDto;
 import com.tripwise.backend.dto.request.user.TokenRefreshRequestDto;
+import com.tripwise.backend.dto.request.user.UserInfoUpdateRequestDto;
 import com.tripwise.backend.dto.request.user.UserLoginRequestDto;
 import com.tripwise.backend.dto.request.user.UserLogoutRequestDto;
 import com.tripwise.backend.dto.request.user.UserRegisterRequestDto;
@@ -79,10 +80,14 @@ public class UserController {
     }
 
     // Update user
-    @PutMapping("/{id}")
-    public String updateUser(@PathVariable Integer id, @RequestBody UserDto updatedUser) {
-        userService.update(id, updatedUser);
-        return "User updated successfully!";
+    @PutMapping("/update")
+    public ResponseEntity<UserLoginResponseDto> updateUser(@RequestBody UserInfoUpdateRequestDto updatedUser) {
+        User user = userService.update(updatedUser);
+        if (user == null) {
+            return new ResponseEntity<>(new UserLoginResponseDto(Constants.USER_NOT_FOUND), HttpStatus.BAD_REQUEST);
+        }
+        UserLoginResponseDto response = new UserLoginResponseDto(user, Constants.USER_INFO_UPDATED);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     // Delete user

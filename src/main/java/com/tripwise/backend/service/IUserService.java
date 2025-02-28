@@ -2,6 +2,7 @@ package com.tripwise.backend.service;
 
 import com.tripwise.backend.dto.UserDto;
 import com.tripwise.backend.dto.request.user.TokenRefreshRequestDto;
+import com.tripwise.backend.dto.request.user.UserInfoUpdateRequestDto;
 import com.tripwise.backend.dto.request.user.UserLoginRequestDto;
 import com.tripwise.backend.dto.request.user.UserLogoutRequestDto;
 import com.tripwise.backend.dto.request.user.UserRegisterRequestDto;
@@ -21,7 +22,7 @@ public interface IUserService {
 
     public boolean verifyUserByToken(String token, Integer userId);
 
-    public void update(Integer id, UserDto userDto);
+    public User update(UserInfoUpdateRequestDto userInfoDto);
 
     public UserDto getUserById(Integer id);
 
