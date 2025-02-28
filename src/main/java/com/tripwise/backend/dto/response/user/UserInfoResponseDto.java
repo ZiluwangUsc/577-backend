@@ -22,7 +22,7 @@ public class UserInfoResponseDto {
         this.setUserId(user.getUserId());
         this.setEmail(user.getEmail());
         this.setUsername(user.getUsername());
-        this.setdisplayName(user.getdisplayName());
+        this.setdisplayName(user.getDisplayName());
     }
 
     public Integer getUserId() {
@@ -49,7 +49,7 @@ public class UserInfoResponseDto {
         this.email = email;
     }
 
-    public String getdisplayName() {
+    public String getDisplayName() {
         return displayName;
     }
 

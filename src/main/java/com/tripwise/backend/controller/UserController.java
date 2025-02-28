@@ -48,7 +48,7 @@ public class UserController {
         if (user.getUsername() == null) {
             return new ResponseEntity<>(new UserLoginResponseDto(Constants.INVALID_USER_CREDENTIAL), HttpStatus.UNAUTHORIZED);
         }
-        UserLoginResponseDto response = new UserLoginResponseDto(user.getUserId(), user.getToken());
+        UserLoginResponseDto response = new UserLoginResponseDto(user);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -58,7 +58,7 @@ public class UserController {
         if (user == null) {
             return new ResponseEntity<>(new UserLoginResponseDto(Constants.USER_NOT_FOUND), HttpStatus.UNAUTHORIZED);
         }
-        UserLoginResponseDto response = new UserLoginResponseDto(user.getUserId(), user.getToken());
+        UserLoginResponseDto response = new UserLoginResponseDto(user);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

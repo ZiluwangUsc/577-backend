@@ -114,7 +114,7 @@ public class UserService implements IUserService {
             User user = userOptional.get();
             logger.info("Fetching User By ID: " + id + ", Found: " + user.toString());
             return new UserDto(user.getUserId(), user.getEmail(), user.getPasswordHash(),
-                    user.getdisplayName(), user.getProfilePhoto(),
+                    user.getDisplayName(), user.getProfilePhoto(),
                     user.getCreatedAt(), user.getUpdatedAt());
         } else {
             logger.warn("User with ID " + id + " not found.");
@@ -131,7 +131,7 @@ public class UserService implements IUserService {
             User user = userOptional.get();
             logger.info("Fetching User By Email: " + email + ", Found: " + user.toString());
             return new UserDto(user.getUserId(), user.getEmail(), user.getPasswordHash(),
-                    user.getdisplayName(), user.getProfilePhoto(),
+                    user.getDisplayName(), user.getProfilePhoto(),
                     user.getCreatedAt(), user.getUpdatedAt());
         } else {
             logger.warn("User with email " + email + " not found.");
@@ -187,7 +187,7 @@ public class UserService implements IUserService {
         user.setUserId(userDto.getUserId());
         user.setEmail(userDto.getEmail());
         user.setPasswordHash(userDto.getPasswordHash());
-        user.setdisplayName(userDto.getdisplayName());
+        user.setdisplayName(userDto.getDisplayName());
         user.setProfilePhoto(userDto.getProfilePhoto());
         user.setCreatedAt(userDto.getCreatedAt());
         user.setUpdatedAt(userDto.getUpdatedAt());
