@@ -2,6 +2,7 @@ package com.tripwise.backend.controller;
 
 import com.tripwise.backend.constants.Constants;
 import com.tripwise.backend.dto.UserDto;
+import com.tripwise.backend.dto.request.user.ResetPasswordRequestDto;
 import com.tripwise.backend.dto.request.user.TokenRefreshRequestDto;
 import com.tripwise.backend.dto.request.user.UserInfoUpdateRequestDto;
 import com.tripwise.backend.dto.request.user.UserLoginRequestDto;
@@ -98,20 +99,14 @@ public class UserController {
     }
 
     @PostMapping("/password-reset-request")
-    public ResponseEntity<?> requestPasswordReset(@RequestBody Map<String, String> request) {
-        String email = request.get("email");
-        String passwordResetToken = userService.requestPasswordReset(email);
-
-        if (passwordResetToken != null) {
-            return ResponseEntity.ok(Map.of(
-                "message", "Password reset link has been sent",
-                "passwordResetToken", passwordResetToken  // 让前端直接拿到 `passwordResetToken`
-            ));
-        } else {
-            return ResponseEntity.badRequest().body(Map.of(
-                "message", "Email not found"
-            ));
+    public ResponseEntity<?> requestPasswordReset(@RequestBody ResetPasswordRequestDto request) {
+        User user = userService.requestPasswordReset(request);
+        if (request == null) {
+            MessageDto response = new MessageDto(Constants.VERIFICATION_FAILED);
+            return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
         }
+
+        return ResponseEntity.ok(Map.of("securityQuestion", user.getSecurityQuestion()));
     }
 
 

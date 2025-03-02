@@ -10,4 +10,5 @@ public final class Constants {
     public static final String USER_NOT_FOUND = "User not found";
     public static final String TOKEN_REFRESHED = "Refresh token successfully";
     public static final String USER_INFO_UPDATED = "User information updated";
+    public static final String VERIFICATION_FAILED = "User token invalid";
 }

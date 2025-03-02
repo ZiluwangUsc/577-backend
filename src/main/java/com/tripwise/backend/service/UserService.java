@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.tripwise.backend.constants.Constants;
 import com.tripwise.backend.controller.UserController;
 import com.tripwise.backend.dto.UserDto;
+import com.tripwise.backend.dto.request.user.ResetPasswordRequestDto;
 import com.tripwise.backend.dto.request.user.TokenRefreshRequestDto;
 import com.tripwise.backend.dto.request.user.UserInfoUpdateRequestDto;
 import com.tripwise.backend.dto.request.user.UserLoginRequestDto;
@@ -147,28 +148,25 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public boolean verifyUserByToken(String token, Integer userId) {
+    public User verifyUserByToken(String token, Integer userId) {
         User user = getUserByToken(token);
         if (user == null) {
-            return false;
+            return null;
         }
         if (!user.getUserId().equals(userId)) {
-            return false;
+            return null;
         }
-        return true;
+        return user;
     }
 
     @Override
     public User update(UserInfoUpdateRequestDto userInfoDto) {
         // verify the user first
-        User user = getUserByToken(userInfoDto.getToken());
+        User user = verifyUserByToken(userInfoDto.getToken(), userInfoDto.getUserId());
         if (user == null) {
             return null;
         }
-        if (!user.getUserId().equals(userInfoDto.getUserId())) {
-            return null;
-        }
-
+        
         // verification passed
         mapUpdateInfoDtoToUser(user, userInfoDto);
         userRepository.save(user);
@@ -255,17 +253,20 @@ public class UserService implements IUserService {
     // 请求修改密码
     @Override
     @Transactional
-    public String requestPasswordReset(String email) {
-        Optional<User> userOptional = userRepository.findByEmail(email);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            String token = this.generateToken();
-            user.setPasswordResetToken(token); // 生成随机 Token
-            user.setPasswordResetTokenExpiry(LocalDateTime.now().plusMinutes(30)); // 30 分钟后过期
-            userRepository.save(user);
-            return token;
+    public User requestPasswordReset(ResetPasswordRequestDto request) {
+        User user = verifyUserByToken(request.getToken(), request.getUserId());
+        if (user == null) {
+            return null;
         }
-        return null;
+        // if (userOptional.isPresent()) {
+        //     User user = userOptional.get();
+        //     String token = this.generateToken();
+        //     user.setPasswordResetToken(token); // 生成随机 Token
+        //     user.setPasswordResetTokenExpiry(LocalDateTime.now().plusMinutes(30)); // 30 分钟后过期
+        //     userRepository.save(user);
+        //     return token;
+        // }
+        return user;
     }
 
     // 使用 Token 重置密码
