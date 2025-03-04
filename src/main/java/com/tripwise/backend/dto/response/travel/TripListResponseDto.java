@@ -18,13 +18,13 @@ import java.util.List;
 public class TripListResponseDto {
 
     private int code;
-    private String userId;
+    private Integer userId;
     private List<TripActivityDto> activities;
 
     public TripListResponseDto() {
     }
 
-    public TripListResponseDto(int code, String userId, List<TripActivityDto> activities) {
+    public TripListResponseDto(int code, Integer userId, List<TripActivityDto> activities) {
         this.code = code;
         this.userId = userId;
         this.activities = activities;
@@ -40,11 +40,11 @@ public class TripListResponseDto {
         this.code = code;
     }
 
-    public String getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
