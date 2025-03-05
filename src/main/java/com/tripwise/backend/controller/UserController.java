@@ -9,6 +9,7 @@ import com.tripwise.backend.dto.request.user.UserLoginRequestDto;
 import com.tripwise.backend.dto.request.user.UserLogoutRequestDto;
 import com.tripwise.backend.dto.request.user.UserRegisterRequestDto;
 import com.tripwise.backend.dto.response.MessageDto;
+import com.tripwise.backend.dto.response.user.ResetPasswordResponseDto;
 import com.tripwise.backend.dto.response.user.UserInfoResponseDto;
 import com.tripwise.backend.dto.response.user.UserLoginResponseDto;
 // import com.tripwise.backend.dto.response.user.UserRegisterResponseDto;
@@ -39,7 +40,7 @@ public class UserController {
         if (newUser == null) { // already exists
             return new ResponseEntity<>(new UserLoginResponseDto(Constants.REGISTER_EXISTED), HttpStatus.BAD_REQUEST);
         }
-        
+
         UserLoginResponseDto response = new UserLoginResponseDto(newUser, Constants.REGISTER_OK);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
@@ -51,7 +52,8 @@ public class UserController {
             return new ResponseEntity<>(new UserLoginResponseDto(Constants.USER_NOT_FOUND), HttpStatus.UNAUTHORIZED);
         }
         if (user.getUsername() == null) {
-            return new ResponseEntity<>(new UserLoginResponseDto(Constants.INVALID_USER_CREDENTIAL), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(new UserLoginResponseDto(Constants.INVALID_USER_CREDENTIAL),
+                    HttpStatus.UNAUTHORIZED);
         }
         UserLoginResponseDto response = new UserLoginResponseDto(user, Constants.LOGIN_OK);
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -102,13 +104,11 @@ public class UserController {
     public ResponseEntity<?> requestPasswordReset(@RequestBody ResetPasswordRequestDto request) {
         User user = userService.requestPasswordReset(request);
         if (request == null) {
-            MessageDto response = new MessageDto(Constants.VERIFICATION_FAILED);
-            return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
+            return verificationFailed();
         }
 
         return ResponseEntity.ok(Map.of("securityQuestion", user.getSecurityQuestion()));
     }
-
 
     // 提交新密码
     @PostMapping("/reset-password")
@@ -117,6 +117,39 @@ public class UserController {
         return success
                 ? ResponseEntity.ok(Map.of("message", "Password has been reset successfully"))
                 : ResponseEntity.badRequest().body(Map.of("message", "Invalid or expired token"));
+    }
+
+    // ----------- new -------------
+    @PostMapping("/reset-password-1")
+    public ResponseEntity<?> resetPasswordStep1(@RequestBody ResetPasswordRequestDto request) {
+        User user = userService.resetPasswordStep1(request);
+        if (user == null) {
+            return verificationFailed();
+        }
+        ResetPasswordResponseDto response = new ResetPasswordResponseDto(user, Constants.USER_INFO_UPDATED);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/reset-password-2")
+    public ResponseEntity<?> resetPasswordStep2(@RequestBody ResetPasswordRequestDto request) {
+        User user = userService.resetPasswordStep2(request);
+        if (user == null) {
+            MessageDto response = new MessageDto(Constants.WRONG_SECURITY_ANS);
+            return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
+        }
+        ResetPasswordResponseDto response = new ResetPasswordResponseDto(user, Constants.CORRECT_SECURITY_ANS);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/reset-password-3")
+    public ResponseEntity<?> resetPasswordStep3(@RequestBody ResetPasswordRequestDto request) {
+        User user = userService.resetPasswordStep3(request);
+        if (user == null) {
+            MessageDto response = new MessageDto(Constants.WRONG_SECURITY_ANS);
+            return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
+        }
+        ResetPasswordResponseDto response = new ResetPasswordResponseDto(user, Constants.PASSWORD_RESET_OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     // Get Current User API
@@ -129,5 +162,10 @@ public class UserController {
         }
         UserInfoResponseDto userInfo = new UserInfoResponseDto(user);
         return new ResponseEntity<>(userInfo, HttpStatus.OK);
+    }
+
+    private ResponseEntity<?> verificationFailed() {
+        MessageDto response = new MessageDto(Constants.VERIFICATION_FAILED);
+        return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
     }
 }

@@ -149,6 +149,10 @@ public class UserService implements IUserService {
 
     @Override
     public User verifyUserByToken(String token, Integer userId) {
+        if (token == null || userId == null) {
+            return null;
+        }
+
         User user = getUserByToken(token);
         if (user == null) {
             return null;
@@ -166,7 +170,7 @@ public class UserService implements IUserService {
         if (user == null) {
             return null;
         }
-        
+
         // verification passed
         mapUpdateInfoDtoToUser(user, userInfoDto);
         userRepository.save(user);
@@ -185,15 +189,15 @@ public class UserService implements IUserService {
     }
 
     // private User mapUserDtoToUser(UserDto userDto) {
-    //     User user = new User();
-    //     user.setUserId(userDto.getUserId());
-    //     user.setEmail(userDto.getEmail());
-    //     user.setPasswordHash(userDto.getPasswordHash());
-    //     user.setDisplayName(userDto.getDisplayName());
-    //     user.setProfilePhoto(userDto.getProfilePhoto());
-    //     user.setCreatedAt(userDto.getCreatedAt());
-    //     user.setUpdatedAt(userDto.getUpdatedAt());
-    //     return user;
+    // User user = new User();
+    // user.setUserId(userDto.getUserId());
+    // user.setEmail(userDto.getEmail());
+    // user.setPasswordHash(userDto.getPasswordHash());
+    // user.setDisplayName(userDto.getDisplayName());
+    // user.setProfilePhoto(userDto.getProfilePhoto());
+    // user.setCreatedAt(userDto.getCreatedAt());
+    // user.setUpdatedAt(userDto.getUpdatedAt());
+    // return user;
     // }
 
     private User mapRegisterDtoToUser(UserRegisterRequestDto dto) {
@@ -259,12 +263,13 @@ public class UserService implements IUserService {
             return null;
         }
         // if (userOptional.isPresent()) {
-        //     User user = userOptional.get();
-        //     String token = this.generateToken();
-        //     user.setPasswordResetToken(token); // 生成随机 Token
-        //     user.setPasswordResetTokenExpiry(LocalDateTime.now().plusMinutes(30)); // 30 分钟后过期
-        //     userRepository.save(user);
-        //     return token;
+        // User user = userOptional.get();
+        // String token = this.generateToken();
+        // user.setPasswordResetToken(token); // 生成随机 Token
+        // user.setPasswordResetTokenExpiry(LocalDateTime.now().plusMinutes(30)); // 30
+        // 分钟后过期
+        // userRepository.save(user);
+        // return token;
         // }
         return user;
     }
@@ -289,5 +294,60 @@ public class UserService implements IUserService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public User resetPasswordStep1(ResetPasswordRequestDto request) {
+        String token = request.getToken();
+        Integer userId = request.getUserId();
+        User user = this.verifyUserByToken(token, userId);
+        if (user == null) {
+            return null;
+        }
+
+        return user;
+    }
+
+    @Override
+    public User resetPasswordStep2(ResetPasswordRequestDto request) {
+        String token = request.getToken();
+        Integer userId = request.getUserId();
+        User user = this.verifyUserByToken(token, userId);
+        if (user == null) {
+            return null;
+        }
+
+        // check answer
+        String securityAns = request.getSecurityAnswer();
+        if (!user.getSecurityAnswer().equals(securityAns)) {
+            return null;
+        }
+
+        // the answer matches
+        String resetToken = this.generateToken();
+        user.setPasswordResetToken(resetToken); // 生成随机 Token
+        user.setPasswordResetTokenExpiry(LocalDateTime.now().plusMinutes(30)); // 30分钟后过期
+        userRepository.save(user);
+
+        return user;
+    }
+
+    @Override
+    public User resetPasswordStep3(ResetPasswordRequestDto request) {
+        String token = request.getToken();
+        Integer userId = request.getUserId();
+        User user = this.verifyUserByToken(token, userId);
+        if (!user.getPasswordResetToken().equals(request.getPasswordResetToken())) {
+            return null;
+        }
+        if (request.getPassword() == null) {
+            return null;
+        }
+        user.setPasswordHash(generateMD5Hash(request.getPassword()));
+        user.setPasswordResetToken(null);
+        user.setPasswordResetTokenExpiry(null);
+
+        userRepository.save(user);
+        return user;
     }
 }

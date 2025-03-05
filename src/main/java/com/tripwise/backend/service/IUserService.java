@@ -44,4 +44,9 @@ public interface IUserService {
 
     public User requestPasswordReset(ResetPasswordRequestDto request);
     public boolean resetPassword(String passwordResetToken, String newPassword);
+    
+    // new reset password
+    public User resetPasswordStep1(ResetPasswordRequestDto request);
+    public User resetPasswordStep2(ResetPasswordRequestDto request);
+    public User resetPasswordStep3(ResetPasswordRequestDto request);
 }

@@ -11,4 +11,8 @@ public final class Constants {
     public static final String TOKEN_REFRESHED = "Refresh token successfully";
     public static final String USER_INFO_UPDATED = "User information updated";
     public static final String VERIFICATION_FAILED = "User token invalid";
+    public static final String SEND_SECURITY_QUESTION = "Password reset question sent";
+    public static final String WRONG_SECURITY_ANS = "Verification failed. The answer is incorrect.";
+    public static final String CORRECT_SECURITY_ANS = "Verification passed. The answer is correct.";
+    public static final String PASSWORD_RESET_OK = "password reset successfully";
 }
