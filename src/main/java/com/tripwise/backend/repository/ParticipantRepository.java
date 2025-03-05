@@ -15,5 +15,6 @@ public interface ParticipantRepository extends JpaRepository<Participant, Long> 
 
     List<Participant> findByTrip(Trip trip);
 
+
     Optional<Participant> findByUserAndTrip(User user, Trip trip);
 }

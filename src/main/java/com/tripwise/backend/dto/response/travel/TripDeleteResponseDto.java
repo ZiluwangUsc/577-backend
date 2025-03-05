@@ -1,4 +1,4 @@
-package com.tripwise.backend.dto.response.trip;
+package com.tripwise.backend.dto.response.travel;
 
 public class TripDeleteResponseDto {
     private int code;

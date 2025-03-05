@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.tripwise.backend.dto.request.trip.TripCreateRequestDto;
+import com.tripwise.backend.dto.request.travel.TripCreateRequestDto;
 import com.tripwise.backend.entity.Trip;
 import com.tripwise.backend.repository.TripRepository;
 

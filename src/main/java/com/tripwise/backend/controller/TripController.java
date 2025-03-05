@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.*;
 
 import com.tripwise.backend.entity.Trip;
 import com.tripwise.backend.repository.TripRepository;
-import com.tripwise.backend.dto.request.trip.TripCreateRequestDto;
-import com.tripwise.backend.dto.response.trip.TripCreateResponseDto;
-import com.tripwise.backend.dto.response.trip.TripActivityDto;
-import com.tripwise.backend.dto.response.trip.TripListResponseDto;
-import com.tripwise.backend.dto.response.trip.TripActivityDetailResponseDto;
-import com.tripwise.backend.dto.response.trip.TripErrorResponseDto;
-import com.tripwise.backend.dto.response.trip.TripDeleteResponseDto;
+import com.tripwise.backend.dto.request.travel.TripCreateRequestDto;
+import com.tripwise.backend.dto.response.travel.TripCreateResponseDto;
+import com.tripwise.backend.dto.response.travel.TripActivityDto;
+import com.tripwise.backend.dto.response.travel.TripListResponseDto;
+import com.tripwise.backend.dto.response.travel.TripActivityDetailResponseDto;
+import com.tripwise.backend.dto.response.travel.TripErrorResponseDto;
+import com.tripwise.backend.dto.response.travel.TripDeleteResponseDto;
 
 import java.time.LocalDate;
 import java.util.*;

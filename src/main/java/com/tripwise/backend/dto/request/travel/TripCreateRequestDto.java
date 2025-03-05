@@ -1,4 +1,4 @@
-package com.tripwise.backend.dto.request.trip;
+package com.tripwise.backend.dto.request.travel;
 
 /**
  * Example JSON:
